@@ -50,17 +50,17 @@ export default function RootLayout({
               <div className="container flex justify-between">
                 <p>
                   &copy; {new Date().getFullYear()}{" "}
-                  <Link href="https://jonas-list.vercel.app/">Jonas List</Link>
+                  <Link href="https://jonas-list.vercel.app/" className="hover:underline">Jonas List</Link>
                 </p>
                 <p>
                   <Link
                     href="https://jquense.github.io/react-big-calendar/examples/index.html?path=/story/about-big-calendar--page"
-                    className="mr-2"
+                    className="mr-2 hover:underline"
                   >
                     Original Big Calendar
                   </Link>
                   |
-                  <Link href="https://ui.shadcn.com/" className="ml-2">
+                  <Link href="https://ui.shadcn.com/" className="ml-2 hover:underline">
                     Shadcn/ui
                   </Link>
                 </p>
