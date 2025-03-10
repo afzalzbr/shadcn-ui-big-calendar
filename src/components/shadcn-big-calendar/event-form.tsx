@@ -26,7 +26,7 @@ export function EventForm({ start, end, onSubmit, onCancel }: EventFormProps) {
     defaultValues: {
       title: "",
       start: start.toISOString().slice(0, 16),
-      end: new Date(start.getTime() + 2 * 60 * 60 * 1000).toISOString().slice(0, 16),
+      end: end.toISOString().slice(0, 16),
     },
   });
 

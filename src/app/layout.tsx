@@ -1,3 +1,4 @@
+import { GitHubStarButton } from "@/components/github-star-button";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { ThemeSelect } from "@/components/theme/theme-select";
 import { cn } from "@/lib/utils";
@@ -42,7 +43,10 @@ export default function RootLayout({
             <nav className="w-full py-4 border-b mb-4">
               <div className="container flex justify-between items-center">
                 <h1 className="text-lg">Shadcn/ui - Big Calendar Styles</h1>
-                <ThemeSelect />
+                <div className="flex items-center gap-2">
+                  <GitHubStarButton />
+                  <ThemeSelect />
+                </div>
               </div>
             </nav>
             {children}
