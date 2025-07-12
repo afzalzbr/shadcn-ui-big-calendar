@@ -125,7 +125,7 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 ## 👨‍💻 Author
 
 **Created by Jonas**  
-For more projects and information, visit [My Website](https://www.listjonas.com/).
+For more projects and information, visit [My Website](https://jonas-list.vercel.app).
 
 ---
 
