@@ -6,23 +6,28 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import moment from "moment";
-import { SetStateAction, useState } from "react";
+import { ComponentType, SetStateAction, useState } from "react";
+import type { CalendarProps } from "react-big-calendar";
 import { momentLocalizer, SlotInfo, Views } from "react-big-calendar";
+import type { EventInteractionArgs } from "react-big-calendar/lib/addons/dragAndDrop";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 
-const DnDCalendar = withDragAndDrop(ShadcnBigCalendar);
+const DnDCalendar = withDragAndDrop<CalendarEvent>(
+  ShadcnBigCalendar as ComponentType<CalendarProps<CalendarEvent>>
+);
 const localizer = momentLocalizer(moment);
 
-type Event = {
+type CalendarEvent = {
   title: string;
   start: Date;
   end: Date;
+  allDay?: boolean;
 };
 
 const LandingPage = () => {
   const [view, setView] = useState(Views.WEEK);
   const [date, setDate] = useState(new Date());
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);
 
   const handleNavigate = (newDate: Date) => {
@@ -38,28 +43,74 @@ const LandingPage = () => {
   };
 
   const handleCreateEvent = (data: { title: string; start: string; end: string }) => {
-    const newEvent = {
+    const startDate = new Date(data.start);
+    const endDate = new Date(data.end);
+    const allDaySelection =
+      startDate.getHours() === 0 &&
+      startDate.getMinutes() === 0 &&
+      endDate.getHours() === 0 &&
+      endDate.getMinutes() === 0 &&
+      endDate.getTime() - startDate.getTime() >= 24 * 60 * 60 * 1000;
+
+    const newEvent: CalendarEvent = {
       title: data.title,
-      start: new Date(data.start),
-      end: new Date(data.end),
+      start: startDate,
+      end: endDate,
+      allDay: allDaySelection,
     };
     setEvents([...events, newEvent]);
     setSelectedSlot(null);
   };
 
-  const handleEventDrop = ({ event, start, end }: any) => {
+  const deriveAllDay = (startDate: Date, endDate: Date, isAllDay?: boolean, fallback?: boolean) => {
+    if (typeof isAllDay === "boolean") return isAllDay;
+    const dayDiff = endDate.getTime() - startDate.getTime();
+    const startsAtMidnight =
+      startDate.getHours() === 0 &&
+      startDate.getMinutes() === 0 &&
+      startDate.getSeconds() === 0;
+    const endsAtMidnight =
+      endDate.getHours() === 0 &&
+      endDate.getMinutes() === 0 &&
+      endDate.getSeconds() === 0;
+    if (startsAtMidnight && endsAtMidnight && dayDiff >= 24 * 60 * 60 * 1000) {
+      return true;
+    }
+    if (!startsAtMidnight || dayDiff < 24 * 60 * 60 * 1000) {
+      return false;
+    }
+    return fallback ?? false;
+  };
+
+  const clampToSingleDay = (startDate: Date) => {
+    const endOfDay = new Date(startDate);
+    endOfDay.setHours(23, 59, 59, 999);
+    return endOfDay;
+  };
+
+  const handleEventDrop = ({ event, start, end, isAllDay }: EventInteractionArgs<CalendarEvent>) => {
+    const nextStart = new Date(start);
+    const nextEnd = new Date(end);
+    const nextAllDay = deriveAllDay(nextStart, nextEnd, isAllDay, event.allDay);
+    const normalizedEnd =
+      !nextAllDay && event.allDay && event.end.getTime() - event.start.getTime() >= 24 * 60 * 60 * 1000
+        ? clampToSingleDay(nextStart)
+        : nextEnd;
     const updatedEvents = events.map((existingEvent) =>
       existingEvent === event
-        ? { ...existingEvent, start, end }
+        ? { ...existingEvent, start: nextStart, end: normalizedEnd, allDay: nextAllDay }
         : existingEvent
     );
     setEvents(updatedEvents);
   };
 
-  const handleEventResize = ({ event, start, end }: any) => {
+  const handleEventResize = ({ event, start, end, isAllDay }: EventInteractionArgs<CalendarEvent>) => {
+    const nextStart = new Date(start);
+    const nextEnd = new Date(end);
+    const nextAllDay = deriveAllDay(nextStart, nextEnd, isAllDay, event.allDay);
     const updatedEvents = events.map((existingEvent) =>
       existingEvent === event
-        ? { ...existingEvent, start, end }
+        ? { ...existingEvent, start: nextStart, end: nextEnd, allDay: nextAllDay }
         : existingEvent
     );
     setEvents(updatedEvents);
@@ -69,7 +120,7 @@ const LandingPage = () => {
     <main className="container my-auto">
       <div className="mb-4">
         <Button onClick={() => setSelectedSlot({ start: new Date(), end: new Date(), slots: [], action: 'click' })}>
-          <Plus className="size-5 mr-2" />
+          <Plus />
           Create Event
         </Button>
       </div>
