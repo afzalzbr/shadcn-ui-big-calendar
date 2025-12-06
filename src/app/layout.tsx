@@ -14,9 +14,38 @@ const fontSans = FontSans({
   variable: "--font-sans",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "shadcn/ui - Big Calendar Styles",
-  description: "Big Calendar Styles",
+  title: "Shadcn Big Calendar | Drag-and-drop scheduling UI",
+  description:
+    "Open source drag-and-drop calendar built with Next.js, shadcn/ui, and react-big-calendar. Resize events, toggle themes, and explore accessible scheduling patterns.",
+  metadataBase: new URL(siteUrl),
+  keywords: [
+    "shadcn",
+    "react big calendar",
+    "drag and drop calendar",
+    "nextjs calendar",
+    "scheduling ui",
+    "calendar component",
+    "accessible calendar",
+  ],
+  authors: [{ name: "Jonas List", url: "https://jonas-list.vercel.app/" }],
+  creator: "Jonas List",
+  openGraph: {
+    title: "Shadcn Big Calendar | Drag-and-drop scheduling UI",
+    description:
+      "A themed React Big Calendar demo with shadcn/ui components, draggable events, and responsive layouts.",
+    type: "website",
+    images: ["/og-calendar.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Shadcn Big Calendar | Drag-and-drop scheduling UI",
+    description:
+      "Explore a styled React Big Calendar with drag-and-drop, event resizing, and light/dark theme support.",
+    images: ["/og-calendar.png"],
+  },
 };
 
 export default function RootLayout({
@@ -42,7 +71,9 @@ export default function RootLayout({
           >
             <nav className="w-full py-4 border-b mb-4">
               <div className="container flex justify-between items-center">
-                <h1 className="text-lg">Shadcn/ui - Big Calendar Styles</h1>
+                <p className="text-lg font-semibold" aria-label="Shadcn Big Calendar home">
+                  Shadcn/ui - Big Calendar Styles
+                </p>
                 <div className="flex items-center gap-2">
                   <GitHubStarButton />
                   <ThemeSelect />

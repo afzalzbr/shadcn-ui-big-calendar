@@ -117,45 +117,70 @@ const LandingPage = () => {
   };
 
   return (
-    <main className="container my-auto">
-      <div className="mb-4">
-        <Button onClick={() => setSelectedSlot({ start: new Date(), end: new Date(), slots: [], action: 'click' })}>
-          <Plus />
-          Create Event
-        </Button>
-      </div>
-      <Dialog open={selectedSlot !== null} onOpenChange={() => setSelectedSlot(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <h2 className="scroll-m-20 text-xl font-semibold tracking-tight">Create Event</h2>
-          </DialogHeader>
-          {selectedSlot && (
-            <EventForm
-              start={selectedSlot.start}
-              end={selectedSlot.end}
-              onSubmit={handleCreateEvent}
-              onCancel={() => setSelectedSlot(null)}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
-      <DnDCalendar
-        localizer={localizer}
-        style={{ height: 600, width: "100%" }}
-        className="border-border border-rounded-md border-solid border-2 rounded-lg" // Optional border
-        selectable
-        date={date}
-        onNavigate={handleNavigate}
-        view={view}
-        onView={handleViewChange}
-        resizable
-        draggableAccessor={() => true}
-        resizableAccessor={() => true}
-        events={events}
-        onSelectSlot={handleSelectSlot}
-        onEventDrop={handleEventDrop}
-        onEventResize={handleEventResize}
-      />
+    <main className="container my-auto space-y-8">
+      <header className="max-w-3xl space-y-3">
+        <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
+          Drag-and-drop scheduling with shadcn/ui and React Big Calendar
+        </h1>
+        <p className="text-muted-foreground">
+          Build production-ready scheduling experiences in Next.js with theme-aware components, accessible dialogs, and
+          resizable events. This demo shows how quickly you can prototype meetings, shifts, and reminders with a modern
+          calendar interface.
+        </p>
+        <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
+          <span className="rounded-full border px-3 py-1">Drag and drop + resizing</span>
+          <span className="rounded-full border px-3 py-1">Week, day, month, and agenda views</span>
+          <span className="rounded-full border px-3 py-1">Light/dark theme toggle</span>
+          <span className="rounded-full border px-3 py-1">Shadcn/ui + Next.js App Router</span>
+        </div>
+      </header>
+      <section className="space-y-4">
+        <div className="flex flex-wrap items-center gap-3 justify-between">
+          <p className="text-muted-foreground">
+            Add a meeting, workshop, or reminder to the demo.
+          </p>
+          <Button
+            aria-label="Create a new calendar event"
+            onClick={() => setSelectedSlot({ start: new Date(), end: new Date(), slots: [], action: "click" })}
+          >
+            <Plus />
+            Create Event
+          </Button>
+        </div>
+        
+        <Dialog open={selectedSlot !== null} onOpenChange={() => setSelectedSlot(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">Create Event</h3>
+            </DialogHeader>
+            {selectedSlot && (
+              <EventForm
+                start={selectedSlot.start}
+                end={selectedSlot.end}
+                onSubmit={handleCreateEvent}
+                onCancel={() => setSelectedSlot(null)}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
+        <DnDCalendar
+          localizer={localizer}
+          style={{ height: 600, width: "100%" }}
+          className="border-border border-rounded-md border-solid border-2 rounded-lg"
+          selectable
+          date={date}
+          onNavigate={handleNavigate}
+          view={view}
+          onView={handleViewChange}
+          resizable
+          draggableAccessor={() => true}
+          resizableAccessor={() => true}
+          events={events}
+          onSelectSlot={handleSelectSlot}
+          onEventDrop={handleEventDrop}
+          onEventResize={handleEventResize}
+        />
+      </section>
     </main>
   );
 };
