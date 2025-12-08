@@ -164,13 +164,16 @@ button.rbc-input::-moz-focus-inner {
 .rbc-btn-group + button {
   margin-left: 10px;
 }
-.rbc-event, 
+.rbc-event,
 .rbc-slot-selection {
-  background-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
+  --event-bg: hsl(var(--primary));
+  --event-color: hsl(var(--primary-foreground));
+  --event-border: hsla(var(--primary), 0.9);
+  background-color: var(--event-bg);
+  color: var(--event-color);
   padding: 3px;
   border-radius: var(--radius);
-  outline: 1px solid hsl(var(--background));
+  border: 1px solid var(--event-border);
   cursor: pointer;
 }
 .rbc-slot-selecting .rbc-event {
@@ -181,8 +184,8 @@ button.rbc-input::-moz-focus-inner {
 .rbc-event:active,
 .rbc-event:focus,
 .rbc-event:focus-visible {
-  background-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
+  background-color: var(--event-bg);
+  color: var(--event-color);
   box-shadow: 0 0 0 2px hsl(var(--ring));
   outline: none;
 }
@@ -454,7 +457,7 @@ button.rbc-input::-moz-focus-inner {
   right: 0;
 }
 .rbc-day-slot .rbc-event {
-  border: 1px solid hsla(var(--primary), 0.9);
+  border: 1px solid var(--event-border);
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -660,7 +663,28 @@ button.rbc-input::-moz-focus-inner {
   border: none;
 }
 .rbc-event:hover {
-  background-color: hsl(var(--ring));
+  background-color: var(--event-bg);
+  box-shadow: 0 0 0 1px hsl(var(--ring));
+}
+.rbc-event.event-variant-primary {
+  --event-bg: hsl(var(--primary));
+  --event-color: hsl(var(--primary-foreground));
+  --event-border: hsla(var(--primary), 0.9);
+}
+.rbc-event.event-variant-secondary {
+  --event-bg: hsl(var(--secondary));
+  --event-color: hsl(var(--secondary-foreground));
+  --event-border: hsl(var(--secondary));
+}
+.rbc-event.event-variant-outline {
+  --event-bg: hsl(var(--background));
+  --event-color: hsl(var(--foreground));
+  --event-border: hsl(var(--input));
+}
+.rbc-event.event-variant-outline:hover {
+  --event-bg: hsl(var(--accent));
+  --event-color: hsl(var(--accent-foreground));
+  --event-border: hsl(var(--accent));
 }
 .event-component {
   background-color: hsl(var(--primary));

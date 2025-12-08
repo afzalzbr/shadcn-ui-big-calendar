@@ -22,6 +22,7 @@ type CalendarEvent = {
   start: Date;
   end: Date;
   allDay?: boolean;
+  variant?: "primary" | "secondary" | "outline";
 };
 
 const startOfToday = new Date();
@@ -39,27 +40,56 @@ const presetEvents: CalendarEvent[] = [
     title: "Product design sync",
     start: createDate(0, 9, 30),
     end: createDate(0, 10, 30),
+    variant: "primary",
   },
   {
     title: "Customer onboarding",
     start: createDate(1, 13),
     end: createDate(1, 14),
+    variant: "secondary",
   },
   {
     title: "Deep work block",
     start: createDate(2, 11),
     end: createDate(2, 13),
+    variant: "outline",
   },
   {
     title: "Team offsite",
     start: createDate(-1, 0),
     end: createDate(1, 0),
     allDay: true,
+    variant: "secondary",
   },
   {
     title: "Retro & planning",
     start: createDate(3, 15),
     end: createDate(3, 16, 30),
+    variant: "primary",
+  },
+  {
+    title: "Quarterly roadmap",
+    start: createDate(30, 10),
+    end: createDate(30, 11, 30),
+    variant: "primary",
+  },
+  {
+    title: "Partner demo",
+    start: createDate(32, 14),
+    end: createDate(32, 15),
+    variant: "secondary",
+  },
+  {
+    title: "Billing review",
+    start: createDate(34, 9),
+    end: createDate(34, 10),
+    variant: "outline",
+  },
+  {
+    title: "Security tabletop",
+    start: createDate(36, 13),
+    end: createDate(36, 14, 30),
+    variant: "primary",
   },
 ];
 
@@ -68,6 +98,13 @@ const LandingPage = () => {
   const [date, setDate] = useState(new Date());
   const [events, setEvents] = useState<CalendarEvent[]>(() => [...presetEvents]);
   const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);
+
+  const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (event) => {
+    const variant = event.variant ?? "primary";
+    return {
+      className: `event-variant-${variant}`,
+    };
+  };
 
   const handleNavigate = (newDate: Date) => {
     setDate(newDate);
@@ -81,7 +118,7 @@ const LandingPage = () => {
     setSelectedSlot(slotInfo);
   };
 
-  const handleCreateEvent = (data: { title: string; start: string; end: string }) => {
+  const handleCreateEvent = (data: { title: string; start: string; end: string; variant: CalendarEvent["variant"] }) => {
     const startDate = new Date(data.start);
     const endDate = new Date(data.end);
     const allDaySelection =
@@ -96,6 +133,7 @@ const LandingPage = () => {
       start: startDate,
       end: endDate,
       allDay: allDaySelection,
+      variant: data.variant ?? "primary",
     };
     setEvents((previous) => [...previous, newEvent]);
     setSelectedSlot(null);
@@ -215,6 +253,7 @@ const LandingPage = () => {
           draggableAccessor={() => true}
           resizableAccessor={() => true}
           events={events}
+          eventPropGetter={eventPropGetter}
           onSelectSlot={handleSelectSlot}
           onEventDrop={handleEventDrop}
           onEventResize={handleEventResize}
