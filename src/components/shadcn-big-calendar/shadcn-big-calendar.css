@@ -177,8 +177,14 @@ button.rbc-input::-moz-focus-inner {
   cursor: inherit;
   pointer-events: none;
 }
-.rbc-event.rbc-selected {
-  background-color: hsla(var(--primary), 0.9);
+.rbc-event.rbc-selected,
+.rbc-event:active,
+.rbc-event:focus,
+.rbc-event:focus-visible {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  box-shadow: 0 0 0 2px hsl(var(--ring));
+  outline: none;
 }
 .rbc-event-label {
   display: none;

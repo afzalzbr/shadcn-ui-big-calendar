@@ -24,10 +24,49 @@ type CalendarEvent = {
   allDay?: boolean;
 };
 
+const startOfToday = new Date();
+startOfToday.setHours(0, 0, 0, 0);
+
+const createDate = (dayOffset: number, hours: number, minutes = 0) => {
+  const date = new Date(startOfToday);
+  date.setDate(startOfToday.getDate() + dayOffset);
+  date.setHours(hours, minutes, 0, 0);
+  return date;
+};
+
+const presetEvents: CalendarEvent[] = [
+  {
+    title: "Product design sync",
+    start: createDate(0, 9, 30),
+    end: createDate(0, 10, 30),
+  },
+  {
+    title: "Customer onboarding",
+    start: createDate(1, 13),
+    end: createDate(1, 14),
+  },
+  {
+    title: "Deep work block",
+    start: createDate(2, 11),
+    end: createDate(2, 13),
+  },
+  {
+    title: "Team offsite",
+    start: createDate(-1, 0),
+    end: createDate(1, 0),
+    allDay: true,
+  },
+  {
+    title: "Retro & planning",
+    start: createDate(3, 15),
+    end: createDate(3, 16, 30),
+  },
+];
+
 const LandingPage = () => {
   const [view, setView] = useState(Views.WEEK);
   const [date, setDate] = useState(new Date());
-  const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [events, setEvents] = useState<CalendarEvent[]>(() => [...presetEvents]);
   const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);
 
   const handleNavigate = (newDate: Date) => {
@@ -58,7 +97,7 @@ const LandingPage = () => {
       end: endDate,
       allDay: allDaySelection,
     };
-    setEvents([...events, newEvent]);
+    setEvents((previous) => [...previous, newEvent]);
     setSelectedSlot(null);
   };
 
