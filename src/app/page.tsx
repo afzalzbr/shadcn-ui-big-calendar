@@ -4,8 +4,9 @@ import { EventForm } from "@/components/shadcn-big-calendar/event-form";
 import ShadcnBigCalendar from "@/components/shadcn-big-calendar/shadcn-big-calendar";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
+import { GithubIcon, Plus } from "lucide-react";
 import moment from "moment";
+import Link from "next/link";
 import { ComponentType, SetStateAction, useState } from "react";
 import type { CalendarProps } from "react-big-calendar";
 import { momentLocalizer, SlotInfo, Views } from "react-big-calendar";
@@ -258,6 +259,20 @@ const LandingPage = () => {
           onEventDrop={handleEventDrop}
           onEventResize={handleEventResize}
         />
+      </section>
+      <section className="border border-border rounded-lg p-4 bg-card/60 flex flex-wrap items-center gap-4 justify-between">
+        <div className="space-y-1">
+          <p className="text-lg font-semibold">Get the code</p>
+          <p className="text-muted-foreground text-sm">
+            Grab the repo and, if this helps you ship faster, please drop a star or a quick &lt;3.
+          </p>
+        </div>
+        <Button asChild>
+          <Link href="https://github.com/list-jonas/shadcn-ui-big-calendar" target="_blank" rel="noreferrer">
+            <GithubIcon />
+            Get the code
+          </Link>
+        </Button>
       </section>
     </main>
   );
