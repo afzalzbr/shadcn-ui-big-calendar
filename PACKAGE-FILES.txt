@@ -1,0 +1,61 @@
+# shadcn-big-calendar NPM Package Structure
+
+## Files That Will Be Published to NPM
+(as defined in package.json "files" field and .npmignore)
+
+📦 shadcn-big-calendar@1.0.0
+├── 📄 README.md (copy from README.npm.md before publishing)
+├── 📄 LICENSE
+├── 📄 package.json
+└── 📁 dist/
+    ├── 📄 index.js           (3.6 KB - CommonJS)
+    ├── 📄 index.js.map       (9.5 KB - Source map)
+    ├── 📄 index.mjs          (1.6 KB - ESM)
+    ├── 📄 index.mjs.map      (9.4 KB - Source map)
+    ├── 📄 index.d.ts         (4.3 KB - TypeScript definitions)
+    ├── 📄 index.d.mts        (4.3 KB - ESM TypeScript definitions)
+    └── 📁 styles/
+        └── 📄 shadcn-big-calendar.css (16 KB)
+
+## Source Files (Not Published)
+(used for development and building)
+
+📁 lib/                         (Library source - builds to dist/)
+├── 📄 index.ts                 (Main entry point)
+├── 📄 utils.ts                 (Utility functions)
+├── 📁 components/
+│   ├── 📄 shadcn-big-calendar.tsx
+│   └── 📄 event-form.tsx
+└── 📁 styles/
+    └── 📄 shadcn-big-calendar.css
+
+📁 src/                         (Demo app - not published)
+├── 📁 app/
+├── 📁 components/
+└── 📁 lib/
+
+## Configuration Files (Not Published)
+
+📄 tsconfig.lib.json           (TypeScript config for library)
+📄 tsup.config.ts              (Build configuration)
+📄 .npmignore                  (Files to exclude from npm)
+📄 .npmrc                      (NPM configuration)
+
+## Documentation Files (Not Published)
+
+📄 README.md                   (Project README - keep current)
+📄 README.npm.md               (Copy to README.md before publishing)
+📄 USAGE.md                    (Comprehensive usage examples)
+📄 PUBLISHING.md               (Publishing instructions)
+📄 QUICK-START.md              (Quick reference)
+📄 NPM-PACKAGE-SUMMARY.md      (This summary)
+📄 CHANGELOG.md                (Version history)
+
+## Build Commands
+
+npm run build:lib      → Builds lib/ to dist/
+npm run type-check     → Validates TypeScript
+npm pack              → Creates .tgz for testing
+npm publish           → Publishes to npm
+
+Total package size: ~45 KB (uncompressed)

@@ -324,7 +324,7 @@ import { CustomEvent } from "shadcn-big-calendar";
 - `CustomEvent` - Default (works for all views)
 - `CustomMonthEvent` - Optimized for month view
 - `CustomWeekEvent` - Optimized for week/day views
-- `CustomAgendaEvent` - For agenda view, displays time next to the event title.
+- `CustomAgendaEvent` - For agenda view
 
 ### Generic Data Property
 
