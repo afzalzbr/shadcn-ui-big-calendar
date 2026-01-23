@@ -1,10 +1,9 @@
 {
   "name": "shadcn-big-calendar",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A beautiful, accessible calendar component for React built on top of React Big Calendar with Shadcn UI styling and theming support",
-  "author": "Your Name <afzal.zubair2020@gmail.com>",
+  "author": "Afzal Zubair <afzal.zubair2020@gmail.com>",
   "license": "MIT",
-
   "keywords": [
     "react",
     "calendar",
@@ -79,6 +78,7 @@
     }
   },
   "dependencies": {
+    "@radix-ui/react-switch": "^1.2.6",
     "clsx": "^2.0.0",
     "tailwind-merge": "^2.0.0"
   },

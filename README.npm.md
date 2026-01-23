@@ -7,6 +7,7 @@ A beautiful, accessible calendar component for React built on top of [React Big 
 - **Shadcn UI Integration**: Seamlessly styled with Shadcn UI design tokens and CSS variables
 - **Light/Dark Mode**: Built-in support for theme switching using CSS custom properties
 - **Drag & Drop**: Full drag-and-drop and resize support for events
+- **Confirmation Modal**: Optional confirmation dialog for drag/drop and resize operations
 - **Multiple Views**: Month, week, work week, day, and agenda views
 - **TypeScript**: Fully typed with comprehensive TypeScript definitions
 - **Accessible**: WCAG 2.1 AA compliant with proper ARIA labels
@@ -15,6 +16,7 @@ A beautiful, accessible calendar component for React built on top of [React Big 
 - **Custom Event Styling**: Add custom className to events for individual styling
 - **Time Display**: Built-in event components that show time alongside event titles
 - **Generic Data Props**: Store custom metadata with events using type-safe generics
+- **Modern UI**: Subtle rounded corners (rounded-sm) for a clean, professional appearance
 
 ## Installation
 

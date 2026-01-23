@@ -42,17 +42,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Peer dependencies: React (^18.0.0), React DOM (^18.0.0)
 - Utility dependencies: clsx, tailwind-merge
 
+## [1.1.0] - 2026-01-23
+
+### Added
+
+- **Confirmation Modal for Drag & Drop**: New optional confirmation dialog when dragging or resizing events
+  - Shows comparison between old and new times
+  - Configurable via toggle switch
+  - Supports both drag and resize operations
+  - Smart date formatting (shows full date when spanning multiple days)
+  - Accessible dialog with proper ARIA attributes
+- **Interactive Feature Demo Pages**: Three new demo pages showcasing library capabilities
+  - `/features/custom-classname` - Custom className styling examples
+  - `/features/time-display` - Time display component demonstrations
+  - `/features/data-props` - Generic data props and custom modal integration
+- **Improved Event UI**: Events now use subtle rounded corners (`rounded-sm`) for a more professional appearance
+- **Enhanced Time Display in Agenda View**: Agenda view now displays event times alongside titles
+- **Call-to-Action Components**: New CTA cards for improved user engagement
+
+### Changed
+
+- Updated event border-radius from `var(--radius)` to fixed `0.25rem` for consistency
+- Improved event component styling across all views (month, week, day, agenda)
+
+### Documentation
+
+- Updated README.md with comprehensive examples for new features
+- Added interactive feature demos section
+- Improved drag-and-drop documentation with confirmation modal examples
+- Enhanced TypeScript examples
+
 ## [Unreleased]
 
 ### Planned Features
 
-- Additional event variants and color schemes
-- Custom toolbar components
 - Recurring events support
 - Event filtering and search
 - Print-friendly styles
-- More localizer options
 - Additional calendar view customizations
+- Keyboard shortcuts for confirmation modal
+- Batch confirmation for multiple changes
 
 ---
 

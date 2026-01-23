@@ -155,11 +155,28 @@ function CustomWeekEvent({ event }) {
     /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "text-xs font-medium leading-tight", children: title })
   ] });
 }
-function CustomAgendaEvent({ event }) {
+function CustomAgendaEvent({
+  event
+}) {
+  const formatTime = (date) => {
+    const d = typeof date === "string" ? new Date(date) : date;
+    return d.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true
+    });
+  };
   const eventWithTime = event;
+  const start = eventWithTime.start;
+  const end = eventWithTime.end;
   const title = eventWithTime.title || "";
+  const isAllDay = eventWithTime.allDay;
   const customClassName = eventWithTime.className || "";
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: cn("text-sm", customClassName), children: title });
+  const timeString = !isAllDay && start && end ? `${formatTime(start)} - ${formatTime(end)}` : "All Day";
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: cn("flex items-center gap-2", customClassName), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "text-sm font-medium text-gray-500 w-40", children: timeString }),
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "text-sm", children: title })
+  ] });
 }
 
 // lib/index.ts

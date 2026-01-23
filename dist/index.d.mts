@@ -186,7 +186,7 @@ declare function CustomWeekEvent<T = Record<string, any>>({ event }: EventProps<
  *
  * Optimized for agenda view where events are displayed in a list format.
  */
-declare function CustomAgendaEvent<T = Record<string, any>>({ event }: EventProps<T & {
+declare function CustomAgendaEvent<T = Record<string, any>>({ event, }: EventProps<T & {
     className?: string;
 }>): react_jsx_runtime.JSX.Element;
 

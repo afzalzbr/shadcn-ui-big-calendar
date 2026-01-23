@@ -7,6 +7,7 @@ A beautiful, accessible calendar component for React built on top of [React Big 
 - **Shadcn UI Integration**: Seamlessly styled with Shadcn UI design tokens and CSS variables
 - **Light/Dark Mode**: Built-in support for theme switching using CSS custom properties
 - **Drag & Drop**: Full drag-and-drop and resize support for events
+- **Confirmation Modal**: Optional confirmation dialog for drag/drop and resize operations
 - **Multiple Views**: Month, week, work week, day, and agenda views
 - **TypeScript**: Fully typed with comprehensive TypeScript definitions
 - **Accessible**: WCAG 2.1 AA compliant with proper ARIA labels
@@ -15,6 +16,7 @@ A beautiful, accessible calendar component for React built on top of [React Big 
 - **Custom Event Styling**: Add custom className to events for individual styling
 - **Time Display**: Built-in event components that show time alongside event titles
 - **Generic Data Props**: Store custom metadata with events using type-safe generics
+- **Modern UI**: Subtle rounded corners (rounded-sm) for a clean, professional appearance
 
 ## Installation
 
@@ -357,6 +359,113 @@ const handleSelectEvent = (event: CalendarEvent<MeetingData>) => {
 };
 ```
 
+### Drag & Drop with Confirmation Modal
+
+Add an optional confirmation step before applying drag/drop or resize changes. This pattern is demonstrated in the feature demo pages and can be customized for your needs:
+
+```tsx
+"use client";
+
+import { useState } from "react";
+import {
+  ShadcnBigCalendar,
+  momentLocalizer,
+  withDragAndDrop,
+  type CalendarEvent,
+  type EventInteractionArgs,
+} from "shadcn-big-calendar";
+import "shadcn-big-calendar/styles";
+import moment from "moment";
+
+const DnDCalendar = withDragAndDrop(ShadcnBigCalendar);
+const localizer = momentLocalizer(moment);
+
+function CalendarWithConfirmation() {
+  const [events, setEvents] = useState<CalendarEvent[]>([...]);
+  const [requireConfirmation, setRequireConfirmation] = useState(false);
+  const [pendingChange, setPendingChange] = useState<{
+    event: CalendarEvent;
+    start: Date;
+    end: Date;
+    type: "drag" | "resize";
+  } | null>(null);
+
+  const applyEventChange = (event: CalendarEvent, start: Date, end: Date) => {
+    setEvents(prevEvents =>
+      prevEvents.map(ev =>
+        ev.title === event.title && ev.start.getTime() === event.start.getTime()
+          ? { ...ev, start, end }
+          : ev
+      )
+    );
+  };
+
+  const handleEventDrop = ({ event, start, end }: EventInteractionArgs<CalendarEvent>) => {
+    const startDate = typeof start === 'string' ? new Date(start) : start;
+    const endDate = typeof end === 'string' ? new Date(end) : end;
+
+    if (requireConfirmation) {
+      setPendingChange({ event, start: startDate, end: endDate, type: "drag" });
+    } else {
+      applyEventChange(event, startDate, endDate);
+    }
+  };
+
+  const handleEventResize = ({ event, start, end }: EventInteractionArgs<CalendarEvent>) => {
+    const startDate = typeof start === 'string' ? new Date(start) : start;
+    const endDate = typeof end === 'string' ? new Date(end) : end;
+
+    if (requireConfirmation) {
+      setPendingChange({ event, start: startDate, end: endDate, type: "resize" });
+    } else {
+      applyEventChange(event, startDate, endDate);
+    }
+  };
+
+  return (
+    <>
+      {/* Toggle for confirmation mode */}
+      <div className="flex items-center gap-2 mb-4">
+        <Switch
+          checked={requireConfirmation}
+          onCheckedChange={setRequireConfirmation}
+        />
+        <label>Require Confirmation</label>
+      </div>
+
+      <DnDCalendar
+        localizer={localizer}
+        events={events}
+        onEventDrop={handleEventDrop}
+        onEventResize={handleEventResize}
+        resizable
+        style={{ height: 600 }}
+      />
+
+      {/* Your custom confirmation modal component */}
+      {pendingChange && (
+        <YourConfirmationModal
+          isOpen={true}
+          eventTitle={pendingChange.event.title}
+          oldStart={pendingChange.event.start}
+          oldEnd={pendingChange.event.end}
+          newStart={pendingChange.start}
+          newEnd={pendingChange.end}
+          changeType={pendingChange.type}
+          onConfirm={() => {
+            applyEventChange(pendingChange.event, pendingChange.start, pendingChange.end);
+            setPendingChange(null);
+          }}
+          onCancel={() => setPendingChange(null)}
+        />
+      )}
+    </>
+  );
+}
+```
+
+See the [interactive demos](https://shadcn-ui-big-calendar.vercel.app/features) for a complete working example with a confirmation modal implementation.
+
 ### Complete Example with All Features
 
 ```tsx
@@ -532,6 +641,27 @@ const eventFormSchema = z.object({
   variant: z.enum(["primary", "secondary", "outline"]),
 });
 ```
+
+## Interactive Feature Demos
+
+The package includes comprehensive interactive demo pages showcasing all features:
+
+- **Custom className Styling** - `/features/custom-classname`
+  - Examples of applying custom Tailwind classes to events
+  - Dynamic class toggling
+  - Code snippets showing implementation
+
+- **Time Display Components** - `/features/time-display`
+  - Demonstration of `CustomEvent`, `CustomMonthEvent`, `CustomWeekEvent`, and `CustomAgendaEvent`
+  - View switching to see different components in action
+  - Side-by-side comparisons
+
+- **Data Props & Custom Modals** - `/features/data-props`
+  - Type-safe generic data properties
+  - Custom modal integration with event data
+  - Rich event metadata examples (attendees, location, conference links)
+
+Visit the live demos at [https://shadcn-ui-big-calendar.vercel.app/features](https://shadcn-ui-big-calendar.vercel.app/features)
 
 ## Demo
 

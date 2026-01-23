@@ -75,6 +75,12 @@ export default function RootLayout({
                   Shadcn/ui - Big Calendar Styles
                 </p>
                 <div className="flex items-center gap-2">
+                  <Link
+                    href="/features"
+                    className="mr-2 hover:underline"
+                  >
+                    Features
+                  </Link>
                   <GitHubStarButton />
                   <ThemeSelect />
                 </div>

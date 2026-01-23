@@ -1,12 +1,15 @@
 "use client";
 
+import { CodeBlock } from "@/components/code-block";
 import ShadcnBigCalendar from "@/components/shadcn-big-calendar/shadcn-big-calendar";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { EventChangeConfirmationModal } from "@/components/event-change-confirmation-modal";
 import { ArrowLeft, Code2 } from "lucide-react";
 import moment from "moment";
 import Link from "next/link";
 import { ComponentType, useState } from "react";
-import type { CalendarProps } from "react-big-calendar";
+import type { CalendarProps, View } from "react-big-calendar";
 import { momentLocalizer, Views } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 
@@ -100,8 +103,62 @@ const sampleEvents: CalendarEvent[] = [
 ];
 
 export default function CustomClassNameDemo() {
-  const [events] = useState<CalendarEvent[]>(sampleEvents);
+  const [events, setEvents] = useState<CalendarEvent[]>(sampleEvents);
   const [showCode, setShowCode] = useState(false);
+  const [view, setView] = useState<View>(Views.WEEK);
+  const [date, setDate] = useState(new Date());
+  const [requireConfirmation, setRequireConfirmation] = useState(false);
+
+  // Confirmation modal state
+  const [pendingChange, setPendingChange] = useState<{
+    event: CalendarEvent;
+    start: Date;
+    end: Date;
+    type: "drag" | "resize";
+  } | null>(null);
+
+  const applyEventChange = (event: CalendarEvent, start: Date, end: Date) => {
+    setEvents((prevEvents) =>
+      prevEvents.map((ev) =>
+        ev.title === event.title && ev.start.getTime() === event.start.getTime()
+          ? { ...ev, start, end }
+          : ev
+      )
+    );
+  };
+
+  const handleEventDrop = ({ event, start, end }: { event: CalendarEvent; start: string | Date; end: string | Date }) => {
+    const startDate = typeof start === 'string' ? new Date(start) : start;
+    const endDate = typeof end === 'string' ? new Date(end) : end;
+
+    if (requireConfirmation) {
+      setPendingChange({ event, start: startDate, end: endDate, type: "drag" });
+    } else {
+      applyEventChange(event, startDate, endDate);
+    }
+  };
+
+  const handleEventResize = ({ event, start, end }: { event: CalendarEvent; start: string | Date; end: string | Date }) => {
+    const startDate = typeof start === 'string' ? new Date(start) : start;
+    const endDate = typeof end === 'string' ? new Date(end) : end;
+
+    if (requireConfirmation) {
+      setPendingChange({ event, start: startDate, end: endDate, type: "resize" });
+    } else {
+      applyEventChange(event, startDate, endDate);
+    }
+  };
+
+  const handleConfirmChange = () => {
+    if (pendingChange) {
+      applyEventChange(pendingChange.event, pendingChange.start, pendingChange.end);
+      setPendingChange(null);
+    }
+  };
+
+  const handleCancelChange = () => {
+    setPendingChange(null);
+  };
 
   const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (event) => {
     const classes: string[] = [];
@@ -217,37 +274,59 @@ const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (event)
 
   return (
     <main className="container space-y-8 py-8">
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" asChild>
+      <div className="flex items-start gap-4">
+        <Button variant="ghost" size="icon" asChild className="mt-1">
           <Link href="/features">
             <ArrowLeft className="h-4 w-4" />
           </Link>
         </Button>
-        <div>
-          <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
+        <div className="flex-1">
+          <h1 className="scroll-m-20 text-3xl md:text-4xl font-bold tracking-tight">
             Custom className Styling
           </h1>
-          <p className="text-muted-foreground mt-2">
+          <p className="text-muted-foreground mt-2 text-sm md:text-base">
             Apply custom CSS classes to events based on categories, priorities, or any custom logic
           </p>
         </div>
       </div>
 
       <section className="space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-4">
           <h2 className="text-2xl font-semibold tracking-tight">Interactive Demo</h2>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowCode(!showCode)}
-          >
-            <Code2 className="mr-2 h-4 w-4" />
-            {showCode ? "Hide Code" : "Show Code"}
-          </Button>
+          <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex items-center gap-2">
+              <Switch
+                id="confirmation-mode"
+                checked={requireConfirmation}
+                onCheckedChange={setRequireConfirmation}
+              />
+              <label
+                htmlFor="confirmation-mode"
+                className="text-sm font-medium cursor-pointer"
+              >
+                Require Confirmation
+              </label>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowCode(!showCode)}
+            >
+              <Code2 className="mr-2 h-4 w-4" />
+              {showCode ? "Hide Code" : "Show Code"}
+            </Button>
+          </div>
         </div>
 
         <div className="rounded-lg border bg-card/50 p-4 space-y-3">
-          <h3 className="font-semibold">Legend</h3>
+          <div className="flex items-start justify-between gap-4 mb-2">
+            <h3 className="font-semibold">Legend</h3>
+            <p className="text-xs text-muted-foreground">
+              {requireConfirmation
+                ? "Confirmation modal enabled - drag or resize events to see the confirmation dialog"
+                : "Immediate updates - drag or resize events for instant changes"}
+            </p>
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div className="flex items-center gap-2">
               <div className="h-4 w-4 rounded bg-primary" />
@@ -284,16 +363,24 @@ const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (event)
           </div>
         </div>
 
-        <DnDCalendar
-          localizer={localizer}
-          events={events}
-          eventPropGetter={eventPropGetter}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 600 }}
-          defaultView={Views.WEEK}
-          className="border-border border-rounded-md border-solid border-2 rounded-lg"
-        />
+        <div className="h-[500px] md:h-[600px]">
+          <DnDCalendar
+            localizer={localizer}
+            events={events}
+            eventPropGetter={eventPropGetter}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: "100%" }}
+            view={view}
+            onView={setView}
+            date={date}
+            onNavigate={setDate}
+            onEventDrop={handleEventDrop}
+            onEventResize={handleEventResize}
+            resizable
+            className="border-border border-rounded-md border-solid border-2 rounded-lg"
+          />
+        </div>
       </section>
 
       {showCode && (
@@ -304,16 +391,20 @@ const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (event)
             <div className="space-y-4">
               <div>
                 <h3 className="text-lg font-semibold mb-2">TypeScript & eventPropGetter</h3>
-                <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
-                  <code>{codeExample}</code>
-                </pre>
+                <CodeBlock
+                  code={codeExample}
+                  language="tsx"
+                  fileName="calendar.tsx"
+                />
               </div>
 
               <div>
                 <h3 className="text-lg font-semibold mb-2">CSS Styles</h3>
-                <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
-                  <code>{cssExample}</code>
-                </pre>
+                <CodeBlock
+                  code={cssExample}
+                  language="css"
+                  fileName="styles.css"
+                />
               </div>
             </div>
           </div>
@@ -395,6 +486,21 @@ const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (event)
           opacity: 0.8;
         }
       `}</style>
+
+      {/* Confirmation Modal */}
+      {pendingChange && (
+        <EventChangeConfirmationModal
+          isOpen={true}
+          onConfirm={handleConfirmChange}
+          onCancel={handleCancelChange}
+          eventTitle={pendingChange.event.title}
+          oldStart={pendingChange.event.start}
+          oldEnd={pendingChange.event.end}
+          newStart={pendingChange.start}
+          newEnd={pendingChange.end}
+          changeType={pendingChange.type}
+        />
+      )}
     </main>
   );
 }
