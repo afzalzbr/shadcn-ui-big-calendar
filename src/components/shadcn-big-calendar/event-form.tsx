@@ -1,8 +1,18 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from "@/components/ui/native-select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -34,7 +44,10 @@ export function EventForm({ start, end, onSubmit, onCancel }: EventFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full p-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-4 w-full p-4"
+      >
         <FormField
           control={form.control}
           name="title"
@@ -45,8 +58,8 @@ export function EventForm({ start, end, onSubmit, onCancel }: EventFormProps) {
                 <Input placeholder="Enter event title" {...field} />
               </FormControl>
             </FormItem>
-            )}
-          />
+          )}
+        />
         <FormField
           control={form.control}
           name="variant"
@@ -54,14 +67,17 @@ export function EventForm({ start, end, onSubmit, onCancel }: EventFormProps) {
             <FormItem>
               <FormLabel>Style</FormLabel>
               <FormControl>
-                <select
-                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  {...field}
-                >
-                  <option value="primary">Primary</option>
-                  <option value="secondary">Secondary</option>
-                  <option value="outline">Outline</option>
-                </select>
+                <NativeSelect className="w-full" {...field}>
+                  <NativeSelectOption value="primary">
+                    Primary
+                  </NativeSelectOption>
+                  <NativeSelectOption value="secondary">
+                    Secondary
+                  </NativeSelectOption>
+                  <NativeSelectOption value="outline">
+                    Outline
+                  </NativeSelectOption>
+                </NativeSelect>
               </FormControl>
             </FormItem>
           )}
