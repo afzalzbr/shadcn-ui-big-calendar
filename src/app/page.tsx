@@ -300,7 +300,7 @@ const LandingPage = () => {
         </Dialog>
         <DnDCalendar
           localizer={localizer}
-          style={{ height: 600, width: "100%" }}
+          style={{ height: 700, width: "100%" }}
           className="border-border border-rounded-md border-solid border-2 rounded-lg"
           selectable
           date={date}
