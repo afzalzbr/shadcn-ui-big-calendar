@@ -40,13 +40,13 @@ const presetEvents: CalendarEvent[] = [
   {
     title: "Product design sync",
     start: createDate(0, 9, 30),
-    end: createDate(0, 10, 30),
+    end: createDate(0, 12, 30),
     variant: "primary",
   },
   {
     title: "Customer onboarding",
     start: createDate(1, 13),
-    end: createDate(1, 14),
+    end: createDate(1, 14, 30),
     variant: "secondary",
   },
   {
@@ -54,6 +54,12 @@ const presetEvents: CalendarEvent[] = [
     start: createDate(2, 11),
     end: createDate(2, 13),
     variant: "outline",
+  },
+  {
+    title: "Prepare Presentation",
+    start: createDate(-2, 9),
+    end: createDate(-2, 13),
+    variant: "secondary",
   },
   {
     title: "Team offsite",
@@ -83,7 +89,7 @@ const presetEvents: CalendarEvent[] = [
   {
     title: "Billing review",
     start: createDate(34, 9),
-    end: createDate(34, 10),
+    end: createDate(34, 11),
     variant: "outline",
   },
   {
