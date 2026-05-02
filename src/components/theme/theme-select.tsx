@@ -3,9 +3,11 @@
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
-import { Button, ButtonProps } from "@/components/ui/button";
+import { ComponentProps } from "react";
 
-type ThemeSelectProps = ButtonProps;
+import { Button } from "@/components/ui/button";
+
+type ThemeSelectProps = ComponentProps<typeof Button>;
 
 export function ThemeSelect({ ...props }: ThemeSelectProps) {
   const { theme, setTheme } = useTheme();
