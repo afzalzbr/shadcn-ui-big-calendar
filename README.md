@@ -11,7 +11,7 @@ Experience the live demo of the calendar in action:
 
 ### Screenshots
 
-#### 🌙 Dark Theme - Month View
+#### 🌙 Dark Theme - Week View
 ![Dark Theme - Month View](/images/dark_week.png)
 
 #### ☀️ Light Theme - Week View
