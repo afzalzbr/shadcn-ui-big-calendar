@@ -9,10 +9,7 @@ import { Inter as FontSans } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
+const geist = FontSans({ subsets: ["latin"], variable: "--font-sans" });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -54,11 +51,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={cn("font-sans", geist.variable)}>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased flex flex-col",
-          fontSans.variable
+          geist.variable
         )}
       >
         <Analytics />
@@ -70,8 +67,11 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <nav className="w-full py-4 border-b mb-4">
-              <div className="container flex justify-between items-center">
-                <p className="text-lg font-semibold" aria-label="Shadcn Big Calendar home">
+              <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+                <p
+                  className="text-lg font-semibold"
+                  aria-label="Shadcn Big Calendar home"
+                >
                   Shadcn/ui - Big Calendar Styles
                 </p>
                 <div className="flex items-center gap-2">
@@ -88,10 +88,15 @@ export default function RootLayout({
             </nav>
             {children}
             <footer className="w-full py-4 border-t mt-auto">
-              <div className="container flex justify-between">
+              <div className="mx-auto flex w-full max-w-7xl justify-between px-4 sm:px-6 lg:px-8">
                 <p>
                   &copy; {new Date().getFullYear()}{" "}
-                  <Link href="https://jonas-list.vercel.app/" className="hover:underline">Jonas List</Link>
+                  <Link
+                    href="https://jonas-list.vercel.app/"
+                    className="hover:underline"
+                  >
+                    Jonas List
+                  </Link>
                 </p>
                 <p>
                   <Link
@@ -101,7 +106,10 @@ export default function RootLayout({
                     Original Big Calendar
                   </Link>
                   |
-                  <Link href="https://ui.shadcn.com/" className="ml-2 hover:underline">
+                  <Link
+                    href="https://ui.shadcn.com/"
+                    className="ml-2 hover:underline"
+                  >
                     Shadcn/ui
                   </Link>
                 </p>

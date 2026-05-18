@@ -40,13 +40,13 @@ const presetEvents: CalendarEvent[] = [
   {
     title: "Product design sync",
     start: createDate(0, 9, 30),
-    end: createDate(0, 10, 30),
+    end: createDate(0, 12, 30),
     variant: "primary",
   },
   {
     title: "Customer onboarding",
     start: createDate(1, 13),
-    end: createDate(1, 14),
+    end: createDate(1, 14, 30),
     variant: "secondary",
   },
   {
@@ -54,6 +54,12 @@ const presetEvents: CalendarEvent[] = [
     start: createDate(2, 11),
     end: createDate(2, 13),
     variant: "outline",
+  },
+  {
+    title: "Prepare Presentation",
+    start: createDate(-2, 9),
+    end: createDate(-2, 13),
+    variant: "secondary",
   },
   {
     title: "Team offsite",
@@ -83,7 +89,7 @@ const presetEvents: CalendarEvent[] = [
   {
     title: "Billing review",
     start: createDate(34, 9),
-    end: createDate(34, 10),
+    end: createDate(34, 11),
     variant: "outline",
   },
   {
@@ -97,10 +103,14 @@ const presetEvents: CalendarEvent[] = [
 const LandingPage = () => {
   const [view, setView] = useState(Views.WEEK);
   const [date, setDate] = useState(new Date());
-  const [events, setEvents] = useState<CalendarEvent[]>(() => [...presetEvents]);
+  const [events, setEvents] = useState<CalendarEvent[]>(() => [
+    ...presetEvents,
+  ]);
   const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);
 
-  const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (event) => {
+  const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (
+    event
+  ) => {
     const variant = event.variant ?? "primary";
     return {
       className: `event-variant-${variant}`,
@@ -119,7 +129,12 @@ const LandingPage = () => {
     setSelectedSlot(slotInfo);
   };
 
-  const handleCreateEvent = (data: { title: string; start: string; end: string; variant: CalendarEvent["variant"] }) => {
+  const handleCreateEvent = (data: {
+    title: string;
+    start: string;
+    end: string;
+    variant: CalendarEvent["variant"];
+  }) => {
     const startDate = new Date(data.start);
     const endDate = new Date(data.end);
     const allDaySelection =
@@ -140,7 +155,12 @@ const LandingPage = () => {
     setSelectedSlot(null);
   };
 
-  const deriveAllDay = (startDate: Date, endDate: Date, isAllDay?: boolean, fallback?: boolean) => {
+  const deriveAllDay = (
+    startDate: Date,
+    endDate: Date,
+    isAllDay?: boolean,
+    fallback?: boolean
+  ) => {
     if (typeof isAllDay === "boolean") return isAllDay;
     const dayDiff = endDate.getTime() - startDate.getTime();
     const startsAtMidnight =
@@ -166,50 +186,81 @@ const LandingPage = () => {
     return endOfDay;
   };
 
-  const handleEventDrop = ({ event, start, end, isAllDay }: EventInteractionArgs<CalendarEvent>) => {
+  const handleEventDrop = ({
+    event,
+    start,
+    end,
+    isAllDay,
+  }: EventInteractionArgs<CalendarEvent>) => {
     const nextStart = new Date(start);
     const nextEnd = new Date(end);
     const nextAllDay = deriveAllDay(nextStart, nextEnd, isAllDay, event.allDay);
     const normalizedEnd =
-      !nextAllDay && event.allDay && event.end.getTime() - event.start.getTime() >= 24 * 60 * 60 * 1000
+      !nextAllDay &&
+      event.allDay &&
+      event.end.getTime() - event.start.getTime() >= 24 * 60 * 60 * 1000
         ? clampToSingleDay(nextStart)
         : nextEnd;
     const updatedEvents = events.map((existingEvent) =>
       existingEvent === event
-        ? { ...existingEvent, start: nextStart, end: normalizedEnd, allDay: nextAllDay }
+        ? {
+            ...existingEvent,
+            start: nextStart,
+            end: normalizedEnd,
+            allDay: nextAllDay,
+          }
         : existingEvent
     );
     setEvents(updatedEvents);
   };
 
-  const handleEventResize = ({ event, start, end, isAllDay }: EventInteractionArgs<CalendarEvent>) => {
+  const handleEventResize = ({
+    event,
+    start,
+    end,
+    isAllDay,
+  }: EventInteractionArgs<CalendarEvent>) => {
     const nextStart = new Date(start);
     const nextEnd = new Date(end);
     const nextAllDay = deriveAllDay(nextStart, nextEnd, isAllDay, event.allDay);
     const updatedEvents = events.map((existingEvent) =>
       existingEvent === event
-        ? { ...existingEvent, start: nextStart, end: nextEnd, allDay: nextAllDay }
+        ? {
+            ...existingEvent,
+            start: nextStart,
+            end: nextEnd,
+            allDay: nextAllDay,
+          }
         : existingEvent
     );
     setEvents(updatedEvents);
   };
 
   return (
-    <main className="container my-auto space-y-8">
+    <main className="mx-auto my-auto w-full max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8">
       <header className="max-w-3xl space-y-3">
         <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
           Drag-and-drop scheduling with shadcn/ui and React Big Calendar
         </h1>
         <p className="text-muted-foreground">
-          Build production-ready scheduling experiences in Next.js with theme-aware components, accessible dialogs, and
-          resizable events. This demo shows how quickly you can prototype meetings, shifts, and reminders with a modern
-          calendar interface.
+          Build production-ready scheduling experiences in Next.js with
+          theme-aware components, accessible dialogs, and resizable events. This
+          demo shows how quickly you can prototype meetings, shifts, and
+          reminders with a modern calendar interface.
         </p>
         <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
-          <span className="rounded-full border px-3 py-1">Drag and drop + resizing</span>
-          <span className="rounded-full border px-3 py-1">Week, day, month, and agenda views</span>
-          <span className="rounded-full border px-3 py-1">Light/dark theme toggle</span>
-          <span className="rounded-full border px-3 py-1">Shadcn/ui + Next.js App Router</span>
+          <span className="rounded-full border px-3 py-1">
+            Drag and drop + resizing
+          </span>
+          <span className="rounded-full border px-3 py-1">
+            Week, day, month, and agenda views
+          </span>
+          <span className="rounded-full border px-3 py-1">
+            Light/dark theme toggle
+          </span>
+          <span className="rounded-full border px-3 py-1">
+            Shadcn/ui + Next.js App Router
+          </span>
         </div>
       </header>
       <section className="space-y-4">
@@ -219,17 +270,29 @@ const LandingPage = () => {
           </p>
           <Button
             aria-label="Create a new calendar event"
-            onClick={() => setSelectedSlot({ start: new Date(), end: new Date(), slots: [], action: "click" })}
+            onClick={() =>
+              setSelectedSlot({
+                start: new Date(),
+                end: new Date(),
+                slots: [],
+                action: "click",
+              })
+            }
           >
             <Plus />
             Create Event
           </Button>
         </div>
-        
-        <Dialog open={selectedSlot !== null} onOpenChange={() => setSelectedSlot(null)}>
+
+        <Dialog
+          open={selectedSlot !== null}
+          onOpenChange={() => setSelectedSlot(null)}
+        >
           <DialogContent>
             <DialogHeader>
-              <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">Create Event</h3>
+              <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">
+                Create Event
+              </h3>
             </DialogHeader>
             {selectedSlot && (
               <EventForm
@@ -243,7 +306,7 @@ const LandingPage = () => {
         </Dialog>
         <DnDCalendar
           localizer={localizer}
-          style={{ height: 600, width: "100%" }}
+          style={{ height: 700, width: "100%" }}
           className="border-border border-rounded-md border-solid border-2 rounded-lg"
           selectable
           date={date}
@@ -264,11 +327,16 @@ const LandingPage = () => {
         <div className="space-y-1">
           <p className="text-lg font-semibold">Get the code</p>
           <p className="text-muted-foreground text-sm">
-            Grab the repo and, if this helps you ship faster, please drop a star or a quick &lt;3.
+            Grab the repo and, if this helps you ship faster, please drop a star
+            or a quick &lt;3.
           </p>
         </div>
         <Button asChild>
-          <Link href="https://github.com/list-jonas/shadcn-ui-big-calendar" target="_blank" rel="noreferrer">
+          <Link
+            href="https://github.com/list-jonas/shadcn-ui-big-calendar"
+            target="_blank"
+            rel="noreferrer"
+          >
             <GithubIcon />
             Get the code
           </Link>
