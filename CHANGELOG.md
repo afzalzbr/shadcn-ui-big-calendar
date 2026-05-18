@@ -72,17 +72,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved drag-and-drop documentation with confirmation modal examples
 - Enhanced TypeScript examples
 
-## [Unreleased]
+## [1.2.0] - 2026-05-18
 
-### Planned Features
+### Fixed
 
-- Recurring events support
-- Event filtering and search
-- Print-friendly styles
-- Additional calendar view customizations
-- Keyboard shortcuts for confirmation modal
-- Batch confirmation for multiple changes
+- Calendar event overlap rendering handled correctly
 
----
+### Changed
 
-For a complete list of changes, see the [commit history](https://github.com/list-jonas/shadcn-ui-big-calendar/commits/main).
+- Calendar height raised to 700px for better usability
+- Toolbar interactions and theme select button props refined
+- Shadcn UI updated to 4.0.6
+- Big calendar UI components updated with improved styling
+- Preset event durations extended
+- Chart color tokens refreshed
+- Replaced Radix UI primitives with `lucide-react` and `radix-ui` unified package
+- Updated `@radix-ui/react-label` and `@radix-ui/react-slot` dependencies
+- Updated `eslint-config-next` to 14.2.35 for Next.js 14 compatibility
+
+### Documentation
+
+- Updated USAGE.md with latest examples
+- Updated README.md
+
+### Internal
+
+- Code structure and formatting improvements across multiple components
