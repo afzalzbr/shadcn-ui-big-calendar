@@ -2,6 +2,21 @@
 
 This guide provides comprehensive examples for using the shadcn-big-calendar package in your React applications.
 
+This guide focuses on portable, reusable calendar patterns. State management choices (Redux, Zustand, context, local state) are intentionally left to your app.
+
+## Placeholder Quick Map
+
+The advanced sections use `userDefined...` placeholders so you can plug in your own app logic.
+
+| Placeholder | Replace With |
+|-------------|---------------|
+| `userDefinedTimezone` | User preference, tenant setting, or timezone from profile/context |
+| `userDefinedStatusClassNames` | Your status-to-class mapping object |
+| `userDefinedFilters` | Your filter config and defaults |
+| `userDefined...Format` | Your preferred localizer format strings/functions |
+| `userDefinedDrilldownView` | The drilldown view that fits your UX |
+| `userDefinedEvent...` | Your own event IDs, labels, dates, metadata, and optional custom payload |
+
 ## Installation
 
 ```bash
@@ -13,6 +28,9 @@ Choose a date library:
 ```bash
 # For moment.js
 npm install moment
+
+# Optional: for timezone-aware scheduling
+npm install moment-timezone
 
 # OR for date-fns
 npm install date-fns
@@ -27,7 +45,7 @@ In your root layout or main CSS file:
 ```tsx
 // app/layout.tsx or _app.tsx
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
+import "react-big-calendar/lib/addons/dragAndDrop/styles.css"; // Optional: only for withDragAndDrop
 import "shadcn-big-calendar/styles";
 ```
 
@@ -179,6 +197,32 @@ export default function InteractiveCalendar() {
 }
 ```
 
+### Controlled vs Uncontrolled Calendar State
+
+Use controlled state when your calendar must stay in sync with external UI (date jumpers, toolbars, side panels, URL state).
+
+```tsx
+// Controlled
+const [date, setDate] = useState(new Date());
+const [view, setView] = useState(Views.WEEK);
+
+<ShadcnBigCalendar
+  localizer={localizer}
+  events={events}
+  date={date}
+  view={view}
+  onNavigate={setDate}
+  onView={setView}
+/>;
+
+// Uncontrolled
+<ShadcnBigCalendar
+  localizer={localizer}
+  events={events}
+  defaultDate={new Date()}
+/>;
+```
+
 ### Example 3: Drag and Drop Calendar
 
 ```tsx
@@ -213,14 +257,22 @@ export default function DragDropCalendar() {
     },
   ]);
 
-  const handleEventDrop = ({ event, start, end }: EventInteractionArgs<CalendarEvent>) => {
+  const handleEventDrop = ({
+    event,
+    start,
+    end,
+  }: EventInteractionArgs<CalendarEvent>) => {
     const updatedEvents = events.map((e) =>
       e === event ? { ...e, start: new Date(start), end: new Date(end) } : e
     );
     setEvents(updatedEvents);
   };
 
-  const handleEventResize = ({ event, start, end }: EventInteractionArgs<CalendarEvent>) => {
+  const handleEventResize = ({
+    event,
+    start,
+    end,
+  }: EventInteractionArgs<CalendarEvent>) => {
     const updatedEvents = events.map((e) =>
       e === event ? { ...e, start: new Date(start), end: new Date(end) } : e
     );
@@ -253,7 +305,11 @@ export default function DragDropCalendar() {
 ```tsx
 "use client";
 
-import { ShadcnBigCalendar, momentLocalizer, type CalendarEvent } from "shadcn-big-calendar";
+import {
+  ShadcnBigCalendar,
+  momentLocalizer,
+  type CalendarEvent,
+} from "shadcn-big-calendar";
 import moment from "moment";
 
 const localizer = momentLocalizer(moment);
@@ -297,8 +353,17 @@ export default function CustomEventCalendar() {
 "use client";
 
 import { useState } from "react";
-import { ShadcnBigCalendar, momentLocalizer, type SlotInfo } from "shadcn-big-calendar";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  ShadcnBigCalendar,
+  momentLocalizer,
+  type SlotInfo,
+} from "shadcn-big-calendar";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import moment from "moment";
@@ -339,7 +404,10 @@ export default function CalendarWithDialog() {
         style={{ height: "100%" }}
       />
 
-      <Dialog open={selectedSlot !== null} onOpenChange={() => setSelectedSlot(null)}>
+      <Dialog
+        open={selectedSlot !== null}
+        onOpenChange={() => setSelectedSlot(null)}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Create Event</DialogTitle>
@@ -362,6 +430,276 @@ export default function CalendarWithDialog() {
     </div>
   );
 }
+```
+
+## Advanced Portable Patterns
+
+### Timezone-Aware Calendars
+
+```tsx
+"use client";
+
+import { ShadcnBigCalendar, momentLocalizer } from "shadcn-big-calendar";
+import moment from "moment-timezone";
+
+const timezone = userDefinedTimezone ?? moment.tz.guess();
+const localizer = momentLocalizer(moment);
+
+moment.tz.setDefault(timezone);
+
+export default function TimezoneCalendar() {
+  const defaultDate = moment().tz(timezone).toDate();
+
+  return (
+    <div className="h-screen p-4">
+      <ShadcnBigCalendar
+        localizer={localizer}
+        events={events}
+        defaultDate={defaultDate}
+      />
+    </div>
+  );
+}
+```
+
+If you do not store a timezone yet, use `moment.tz.guess()` as a fallback.
+
+### Navigation Sync with External State
+
+```tsx
+const [date, setDate] = useState(new Date());
+const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);
+
+const handleNavigate = (nextDate: Date) => {
+  setDate(nextDate);
+  setSelectedSlot(null); // Clear stale slot selection on navigation
+  // Optional: trigger range-based loading here using nextDate + current view
+};
+
+<ShadcnBigCalendar
+  localizer={localizer}
+  events={events}
+  date={date}
+  onNavigate={handleNavigate}
+/>;
+```
+
+### Day and Event Styling with Getter Callbacks
+
+```tsx
+import { useState } from "react";
+import type {
+  CalendarEvent,
+  DayPropGetter,
+  EventPropGetter,
+} from "shadcn-big-calendar";
+
+type AppointmentEvent = CalendarEvent<{
+  status?: string;
+}>;
+
+const [selectedDay, setSelectedDay] = useState<Date | null>(null);
+const [visibleDate, setVisibleDate] = useState(new Date());
+
+const dayPropGetter: DayPropGetter = (date) => {
+  const isSelected =
+    selectedDay != null &&
+    date.getDate() === selectedDay.getDate() &&
+    date.getMonth() === selectedDay.getMonth() &&
+    date.getFullYear() === selectedDay.getFullYear();
+
+  const outOfMonth =
+    date.getMonth() !== visibleDate.getMonth() ||
+    date.getFullYear() !== visibleDate.getFullYear();
+
+  return {
+    style: {
+      backgroundColor: isSelected ? "hsl(var(--accent))" : undefined,
+      color: isSelected ? "hsl(var(--accent-foreground))" : undefined,
+      opacity: outOfMonth ? 0.45 : 1,
+      pointerEvents: outOfMonth ? "none" : "auto",
+    },
+  };
+};
+
+const eventPropGetter: EventPropGetter<AppointmentEvent> = (event) => {
+  const status = event.data?.status;
+  const statusClassNames = userDefinedStatusClassNames as Record<string, string>;
+
+  return status ? { className: statusClassNames[status] ?? "" } : {};
+};
+
+<ShadcnBigCalendar
+  localizer={localizer}
+  events={events}
+  dayPropGetter={dayPropGetter}
+  eventPropGetter={eventPropGetter}
+  onNavigate={setVisibleDate}
+/>;
+```
+
+### Slot Styling with slotPropGetter
+
+```tsx
+import type { SlotPropGetter } from "shadcn-big-calendar";
+
+const slotPropGetter: SlotPropGetter = (date) => {
+  if (shouldDimSlot(date)) {
+    return {
+      className: "opacity-50",
+      style: { pointerEvents: "none" },
+    };
+  }
+
+  return {};
+};
+
+<ShadcnBigCalendar
+  localizer={localizer}
+  events={events}
+  slotPropGetter={slotPropGetter}
+/>;
+```
+
+### Filter Events Without Refetch
+
+```tsx
+import { useMemo, useState } from "react";
+import type { CalendarEvent } from "shadcn-big-calendar";
+
+type Status = string;
+
+type StatusEvent = CalendarEvent<{
+  status?: Status;
+}>;
+
+const [filters, setFilters] = useState<Record<Status, boolean>>(userDefinedFilters);
+
+const filteredEvents = useMemo(
+  () =>
+    events.filter(
+      (event: StatusEvent) => !!event.data?.status && !!filters[event.data.status]
+    ),
+  [events, filters]
+);
+
+<ShadcnBigCalendar localizer={localizer} events={filteredEvents} />;
+```
+
+For very large datasets, prefer server range loading on `onNavigate` rather than filtering only in the browser.
+
+### Load Events for Visible Range
+
+```tsx
+import { useEffect, useState } from "react";
+import { Views, type View } from "shadcn-big-calendar";
+
+const [date, setDate] = useState(new Date());
+const [view, setView] = useState<View>(Views.WEEK);
+
+const getVisibleRange = (currentDate: Date, currentView: View) =>
+  userDefinedRangeCalculator(currentDate, currentView);
+
+useEffect(() => {
+  const { start, end } = getVisibleRange(date, view);
+  userDefinedLoadEvents({ start, end, view });
+}, [date, view]);
+
+<ShadcnBigCalendar
+  localizer={localizer}
+  events={events}
+  date={date}
+  view={view}
+  onNavigate={setDate}
+  onView={setView}
+/>;
+```
+
+### Slot Selection for Scheduling (No Immediate Event Creation)
+
+```tsx
+import { useState } from "react";
+import { ShadcnBigCalendar, type SlotInfo } from "shadcn-big-calendar";
+
+const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);
+
+const handleSelectSlot = (slotInfo: SlotInfo) => {
+  if (slotInfo.start < new Date()) return; // Example validation
+  setSelectedSlot(slotInfo);
+  // Open your scheduling modal/drawer with slotInfo.start and slotInfo.end
+};
+
+<ShadcnBigCalendar
+  localizer={localizer}
+  events={events}
+  selectable
+  onSelectSlot={handleSelectSlot}
+/>;
+```
+
+### Date and Time Format Customization
+
+```tsx
+const formats = {
+  timeGutterFormat: userDefinedTimeGutterFormat,
+  monthHeaderFormat: userDefinedMonthHeaderFormat,
+  dayHeaderFormat: userDefinedDayHeaderFormat,
+  dayRangeHeaderFormat: userDefinedDayRangeHeaderFormat,
+  dayFormat: userDefinedDayFormat,
+  weekdayFormat: userDefinedWeekdayFormat,
+};
+
+<ShadcnBigCalendar localizer={localizer} events={events} formats={formats} />;
+```
+
+### Conditional Month Drilldown
+
+```tsx
+import { Views, type View } from "shadcn-big-calendar";
+
+const [view, setView] = useState<View>(Views.MONTH);
+const [visibleDate, setVisibleDate] = useState(new Date());
+
+const getDrilldownView = (date: Date) => {
+  const sameMonth =
+    date.getMonth() === visibleDate.getMonth() &&
+    date.getFullYear() === visibleDate.getFullYear();
+
+  return sameMonth ? userDefinedDrilldownView : null;
+};
+
+<ShadcnBigCalendar
+  localizer={localizer}
+  events={events}
+  view={view}
+  onView={setView}
+  onNavigate={setVisibleDate}
+  getDrilldownView={getDrilldownView}
+/>;
+```
+
+### Mapping Your Domain Event Shape
+
+```tsx
+type RawEvent = {
+  id: string;
+  label: string;
+  startsAt: string;
+  endsAt: string;
+  metadata?: Record<string, unknown>;
+};
+
+const mapToCalendarEvent = (item: RawEvent): CalendarEvent => ({
+  title: item.label,
+  start: new Date(item.startsAt),
+  end: new Date(item.endsAt),
+  data: {
+    id: item.id,
+    ...item.metadata,
+  },
+});
+
+const events = userDefinedRawEvents.map(mapToCalendarEvent);
 ```
 
 ## Event Variants
@@ -424,20 +762,30 @@ import type { CalendarEvent } from "shadcn-big-calendar";
 
 interface MyEvent extends CalendarEvent {
   id: string;
+  resourceId?: string;
+  type?: string;
+  status?: string;
   description?: string;
   location?: string;
   attendees?: string[];
+  data?: {
+    [key: string]: unknown;
+  };
 }
 
 const events: MyEvent[] = [
   {
-    id: "1",
-    title: "Meeting",
-    start: new Date(),
-    end: new Date(),
-    description: "Quarterly review",
-    location: "Conference Room A",
-    attendees: ["john@example.com", "jane@example.com"],
+    id: userDefinedEventId,
+    title: userDefinedEventTitle,
+    start: userDefinedEventStart,
+    end: userDefinedEventEnd,
+    resourceId: userDefinedResourceId,
+    type: userDefinedEventType,
+    status: userDefinedEventStatus,
+    description: userDefinedEventDescription,
+    location: userDefinedEventLocation,
+    attendees: userDefinedEventAttendees,
+    data: userDefinedEventData,
   },
 ];
 ```
@@ -450,7 +798,7 @@ Make sure you've imported the styles in the correct order:
 
 ```tsx
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
+import "react-big-calendar/lib/addons/dragAndDrop/styles.css"; // Optional: only for withDragAndDrop
 import "shadcn-big-calendar/styles"; // Should be last
 ```
 
@@ -501,6 +849,8 @@ export default function RootLayout({ children }) {
 
 ## Next Steps
 
+- API parity note: `events`, `localizer`, `views`, `date/defaultDate`, `onNavigate`, `onView`, `onSelectSlot`, and `components` follow react-big-calendar behavior. The wrapper primarily adds style defaults and utility exports.
+- Migrate existing `react-big-calendar` screens with mostly 1:1 props (`events`, `localizer`, `views`, `onSelectSlot`, `onNavigate`) and then layer styling/custom components.
 - Explore the [React Big Calendar documentation](https://github.com/jquense/react-big-calendar) for advanced features
 - Check out the [Shadcn UI documentation](https://ui.shadcn.com/) for component customization
 - See the complete demo at [https://shadcn-ui-big-calendar.vercel.app/](https://shadcn-ui-big-calendar.vercel.app/)
