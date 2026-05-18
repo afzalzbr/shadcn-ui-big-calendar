@@ -237,7 +237,7 @@ const LandingPage = () => {
   };
 
   return (
-    <main className="mx-auto my-auto w-full max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8">
+    <main className="mx-auto my-auto w-full max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8 sm:pb-8">
       <header className="max-w-3xl space-y-3">
         <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
           Drag-and-drop scheduling with shadcn/ui and React Big Calendar

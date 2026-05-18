@@ -1,10 +1,9 @@
 "use client";
 
 import { CodeBlock } from "@/components/code-block";
+import { EventChangeConfirmationModal } from "@/components/event-change-confirmation-modal";
 import ShadcnBigCalendar from "@/components/shadcn-big-calendar/shadcn-big-calendar";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { EventChangeConfirmationModal } from "@/components/event-change-confirmation-modal";
 import {
   Dialog,
   DialogContent,
@@ -12,14 +11,23 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ArrowLeft, Calendar, Clock, MapPin, Users, Video, AlertCircle } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import {
+  AlertCircle,
+  ArrowLeft,
+  Calendar,
+  Clock,
+  MapPin,
+  Users,
+  Video,
+} from "lucide-react";
 import moment from "moment";
 import Link from "next/link";
 import { ComponentType, useState } from "react";
 import type { CalendarProps, View } from "react-big-calendar";
 import { momentLocalizer, Views } from "react-big-calendar";
-import { CustomEvent } from "shadcn-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+import { CustomEvent } from "shadcn-big-calendar";
 
 const DnDCalendar = withDragAndDrop<CalendarEventWithData>(
   ShadcnBigCalendar as ComponentType<CalendarProps<CalendarEventWithData>>
@@ -66,7 +74,8 @@ const sampleEvents: CalendarEventWithData[] = [
     data: {
       location: "Conference Room A",
       attendees: ["Sarah Chen", "Mike Johnson", "Emily Davis"],
-      description: "Quarterly product review and roadmap discussion. We'll cover Q4 achievements and Q1 planning.",
+      description:
+        "Quarterly product review and roadmap discussion. We'll cover Q4 achievements and Q1 planning.",
       priority: "high",
       conferenceLink: "https://meet.example.com/product-review",
       organizer: "Sarah Chen",
@@ -80,7 +89,8 @@ const sampleEvents: CalendarEventWithData[] = [
     data: {
       location: "Creative Lab",
       attendees: ["Alex Kim", "Jordan Lee", "Taylor Smith", "Casey Brown"],
-      description: "Brainstorming session for the new user dashboard redesign. Bring your sketches!",
+      description:
+        "Brainstorming session for the new user dashboard redesign. Bring your sketches!",
       priority: "high",
       organizer: "Alex Kim",
     },
@@ -93,7 +103,8 @@ const sampleEvents: CalendarEventWithData[] = [
     data: {
       location: "Virtual",
       attendees: ["John Williams", "Project Team"],
-      description: "Weekly sync with Acme Corp to review progress and next steps.",
+      description:
+        "Weekly sync with Acme Corp to review progress and next steps.",
       priority: "medium",
       conferenceLink: "https://zoom.us/j/123456789",
       organizer: "John Williams",
@@ -107,7 +118,8 @@ const sampleEvents: CalendarEventWithData[] = [
     data: {
       location: "Main Conference Room",
       attendees: ["Dev Team", "QA Team", "Product Manager"],
-      description: "Sprint retrospective - discuss what went well, what didn't, and improvements for next sprint.",
+      description:
+        "Sprint retrospective - discuss what went well, what didn't, and improvements for next sprint.",
       priority: "medium",
       organizer: "Scrum Master",
     },
@@ -120,7 +132,8 @@ const sampleEvents: CalendarEventWithData[] = [
     data: {
       location: "HR Office",
       attendees: ["HR Manager", "Tech Lead", "Senior Developer Candidate"],
-      description: "Technical interview for senior developer position. Focus on system design and architecture.",
+      description:
+        "Technical interview for senior developer position. Focus on system design and architecture.",
       priority: "high",
       conferenceLink: "https://meet.example.com/interview-dev",
       organizer: "HR Manager",
@@ -134,7 +147,8 @@ const sampleEvents: CalendarEventWithData[] = [
     data: {
       location: "Main Auditorium",
       attendees: ["All Employees"],
-      description: "Monthly all-hands meeting with CEO. Company updates, wins, and Q&A session.",
+      description:
+        "Monthly all-hands meeting with CEO. Company updates, wins, and Q&A session.",
       priority: "high",
       conferenceLink: "https://meet.example.com/all-hands",
       organizer: "CEO Office",
@@ -148,7 +162,8 @@ const sampleEvents: CalendarEventWithData[] = [
     data: {
       location: "Training Room B",
       attendees: ["Junior Developers", "Senior Developers"],
-      description: "Workshop on best practices for code reviews and how to provide constructive feedback.",
+      description:
+        "Workshop on best practices for code reviews and how to provide constructive feedback.",
       priority: "low",
       organizer: "Engineering Manager",
     },
@@ -157,7 +172,8 @@ const sampleEvents: CalendarEventWithData[] = [
 
 export default function DataPropsDemo() {
   const [events, setEvents] = useState<CalendarEventWithData[]>(sampleEvents);
-  const [selectedEvent, setSelectedEvent] = useState<CalendarEventWithData | null>(null);
+  const [selectedEvent, setSelectedEvent] =
+    useState<CalendarEventWithData | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [view, setView] = useState<View>(Views.WEEK);
   const [date, setDate] = useState(new Date());
@@ -176,7 +192,11 @@ export default function DataPropsDemo() {
     setModalOpen(true);
   };
 
-  const applyEventChange = (event: CalendarEventWithData, start: Date, end: Date) => {
+  const applyEventChange = (
+    event: CalendarEventWithData,
+    start: Date,
+    end: Date
+  ) => {
     setEvents((prevEvents) =>
       prevEvents.map((ev) =>
         ev.title === event.title && ev.start.getTime() === event.start.getTime()
@@ -186,9 +206,17 @@ export default function DataPropsDemo() {
     );
   };
 
-  const handleEventDrop = ({ event, start, end }: { event: CalendarEventWithData; start: string | Date; end: string | Date }) => {
-    const startDate = typeof start === 'string' ? new Date(start) : start;
-    const endDate = typeof end === 'string' ? new Date(end) : end;
+  const handleEventDrop = ({
+    event,
+    start,
+    end,
+  }: {
+    event: CalendarEventWithData;
+    start: string | Date;
+    end: string | Date;
+  }) => {
+    const startDate = typeof start === "string" ? new Date(start) : start;
+    const endDate = typeof end === "string" ? new Date(end) : end;
 
     if (requireConfirmation) {
       setPendingChange({ event, start: startDate, end: endDate, type: "drag" });
@@ -197,12 +225,25 @@ export default function DataPropsDemo() {
     }
   };
 
-  const handleEventResize = ({ event, start, end }: { event: CalendarEventWithData; start: string | Date; end: string | Date }) => {
-    const startDate = typeof start === 'string' ? new Date(start) : start;
-    const endDate = typeof end === 'string' ? new Date(end) : end;
+  const handleEventResize = ({
+    event,
+    start,
+    end,
+  }: {
+    event: CalendarEventWithData;
+    start: string | Date;
+    end: string | Date;
+  }) => {
+    const startDate = typeof start === "string" ? new Date(start) : start;
+    const endDate = typeof end === "string" ? new Date(end) : end;
 
     if (requireConfirmation) {
-      setPendingChange({ event, start: startDate, end: endDate, type: "resize" });
+      setPendingChange({
+        event,
+        start: startDate,
+        end: endDate,
+        type: "resize",
+      });
     } else {
       applyEventChange(event, startDate, endDate);
     }
@@ -210,7 +251,11 @@ export default function DataPropsDemo() {
 
   const handleConfirmChange = () => {
     if (pendingChange) {
-      applyEventChange(pendingChange.event, pendingChange.start, pendingChange.end);
+      applyEventChange(
+        pendingChange.event,
+        pendingChange.start,
+        pendingChange.end
+      );
       setPendingChange(null);
     }
   };
@@ -219,12 +264,13 @@ export default function DataPropsDemo() {
     setPendingChange(null);
   };
 
-  const eventPropGetter: CalendarProps<CalendarEventWithData>["eventPropGetter"] = (event) => {
-    const variant = event.variant ?? "primary";
-    return {
-      className: `event-variant-${variant}`,
+  const eventPropGetter: CalendarProps<CalendarEventWithData>["eventPropGetter"] =
+    (event) => {
+      const variant = event.variant ?? "primary";
+      return {
+        className: `event-variant-${variant}`,
+      };
     };
-  };
 
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString([], {
@@ -351,7 +397,7 @@ type CalendarEventWithData = {
 </Dialog>`;
 
   return (
-    <main className="container space-y-8 py-8">
+    <main className="mx-auto my-auto w-full max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8 py-2">
       <div className="flex items-start gap-4">
         <Button variant="ghost" size="icon" asChild className="mt-1">
           <Link href="/features">
@@ -363,14 +409,17 @@ type CalendarEventWithData = {
             Generic Data Props
           </h1>
           <p className="text-muted-foreground mt-2 text-sm md:text-base">
-            Extend events with custom data properties and display them in interactive modals
+            Extend events with custom data properties and display them in
+            interactive modals
           </p>
         </div>
       </div>
 
       <section className="space-y-4">
         <div className="flex items-center justify-between flex-wrap gap-4">
-          <h2 className="text-2xl font-semibold tracking-tight">Interactive Demo</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">
+            Interactive Demo
+          </h2>
           <div className="flex items-center gap-2">
             <Switch
               id="confirmation-mode"
@@ -388,8 +437,9 @@ type CalendarEventWithData = {
 
         <div className="rounded-lg border bg-card/50 p-4 space-y-2">
           <p className="text-sm text-muted-foreground">
-            Click on any event to view its detailed information including location, attendees, priority,
-            and conference links. All data is type-safe using TypeScript generics.
+            Click on any event to view its detailed information including
+            location, attendees, priority, and conference links. All data is
+            type-safe using TypeScript generics.
           </p>
           <p className="text-xs text-muted-foreground">
             {requireConfirmation
@@ -424,7 +474,9 @@ type CalendarEventWithData = {
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle className="text-2xl">{selectedEvent?.title}</DialogTitle>
+            <DialogTitle className="text-2xl">
+              {selectedEvent?.title}
+            </DialogTitle>
             <DialogDescription className="text-base">
               <div className="flex items-center gap-2 mt-2">
                 <Calendar className="h-4 w-4" />
@@ -432,7 +484,8 @@ type CalendarEventWithData = {
               </div>
               <div className="flex items-center gap-2 mt-1">
                 <Clock className="h-4 w-4" />
-                {selectedEvent && `${formatTime(selectedEvent.start)} - ${formatTime(selectedEvent.end)}`}
+                {selectedEvent &&
+                  `${formatTime(selectedEvent.start)} - ${formatTime(selectedEvent.end)}`}
               </div>
             </DialogDescription>
           </DialogHeader>
@@ -443,7 +496,9 @@ type CalendarEventWithData = {
               <AlertCircle className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div className="flex-1">
                 <p className="font-medium mb-1">Priority</p>
-                <span className={`text-sm font-semibold uppercase ${getPriorityColor(selectedEvent?.data?.priority || "low")}`}>
+                <span
+                  className={`text-sm font-semibold uppercase ${getPriorityColor(selectedEvent?.data?.priority || "low")}`}
+                >
                   {selectedEvent?.data?.priority}
                 </span>
               </div>
@@ -519,14 +574,19 @@ type CalendarEventWithData = {
       </Dialog>
 
       <section className="space-y-6">
-        <h2 className="text-2xl font-semibold tracking-tight">Implementation Guide</h2>
+        <h2 className="text-2xl font-semibold tracking-tight">
+          Implementation Guide
+        </h2>
 
         <div className="space-y-4">
           <div>
-            <h3 className="text-lg font-semibold mb-3">1. Define Your Data Interface</h3>
+            <h3 className="text-lg font-semibold mb-3">
+              1. Define Your Data Interface
+            </h3>
             <p className="text-muted-foreground mb-3">
-              Create a TypeScript interface for your custom event data. This ensures type safety
-              and autocomplete support throughout your application.
+              Create a TypeScript interface for your custom event data. This
+              ensures type safety and autocomplete support throughout your
+              application.
             </p>
             <CodeBlock
               code={typeDefinitionCode}
@@ -536,10 +596,12 @@ type CalendarEventWithData = {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-3">2. Create Events with Custom Data</h3>
+            <h3 className="text-lg font-semibold mb-3">
+              2. Create Events with Custom Data
+            </h3>
             <p className="text-muted-foreground mb-3">
-              Populate your events array with the custom data. All properties are type-checked
-              by TypeScript.
+              Populate your events array with the custom data. All properties
+              are type-checked by TypeScript.
             </p>
             <CodeBlock
               code={eventCreationCode}
@@ -549,10 +611,12 @@ type CalendarEventWithData = {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-3">3. Handle Event Selection</h3>
+            <h3 className="text-lg font-semibold mb-3">
+              3. Handle Event Selection
+            </h3>
             <p className="text-muted-foreground mb-3">
-              Use the onSelectEvent callback to capture when users click on events and display
-              the custom data.
+              Use the onSelectEvent callback to capture when users click on
+              events and display the custom data.
             </p>
             <CodeBlock
               code={eventHandlerCode}
@@ -562,10 +626,12 @@ type CalendarEventWithData = {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-3">4. Display Data in Modal</h3>
+            <h3 className="text-lg font-semibold mb-3">
+              4. Display Data in Modal
+            </h3>
             <p className="text-muted-foreground mb-3">
-              Create a modal dialog to show the event details. Access custom data via the
-              event.data property.
+              Create a modal dialog to show the event details. Access custom
+              data via the event.data property.
             </p>
             <CodeBlock
               code={modalCode}
@@ -583,28 +649,32 @@ type CalendarEventWithData = {
           <div className="space-y-2">
             <h3 className="font-semibold">Type Safety</h3>
             <p className="text-sm text-muted-foreground">
-              TypeScript generics ensure your custom data is type-safe with autocomplete support.
+              TypeScript generics ensure your custom data is type-safe with
+              autocomplete support.
             </p>
           </div>
 
           <div className="space-y-2">
             <h3 className="font-semibold">Flexible Schema</h3>
             <p className="text-sm text-muted-foreground">
-              Define any data structure you need - from simple strings to complex nested objects.
+              Define any data structure you need - from simple strings to
+              complex nested objects.
             </p>
           </div>
 
           <div className="space-y-2">
             <h3 className="font-semibold">Rich Context</h3>
             <p className="text-sm text-muted-foreground">
-              Store meeting links, attendees, locations, priorities, and any other metadata.
+              Store meeting links, attendees, locations, priorities, and any
+              other metadata.
             </p>
           </div>
 
           <div className="space-y-2">
             <h3 className="font-semibold">Maintainable Code</h3>
             <p className="text-sm text-muted-foreground">
-              Clear interfaces make it easy to understand and modify your event data structure.
+              Clear interfaces make it easy to understand and modify your event
+              data structure.
             </p>
           </div>
         </div>
@@ -615,30 +685,42 @@ type CalendarEventWithData = {
 
         <div className="space-y-4 text-muted-foreground">
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">Meeting Scheduler</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              Meeting Scheduler
+            </h3>
             <p>
-              Store conference links, attendee lists, meeting rooms, and agenda items for each meeting.
+              Store conference links, attendee lists, meeting rooms, and agenda
+              items for each meeting.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">Project Management</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              Project Management
+            </h3>
             <p>
-              Track task assignees, priority levels, project IDs, and completion status for project milestones.
+              Track task assignees, priority levels, project IDs, and completion
+              status for project milestones.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">Resource Booking</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              Resource Booking
+            </h3>
             <p>
-              Manage room reservations, equipment bookings, and capacity limits with detailed resource information.
+              Manage room reservations, equipment bookings, and capacity limits
+              with detailed resource information.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">Healthcare Appointments</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              Healthcare Appointments
+            </h3>
             <p>
-              Store patient information, doctor details, appointment types, and medical notes securely.
+              Store patient information, doctor details, appointment types, and
+              medical notes securely.
             </p>
           </div>
         </div>

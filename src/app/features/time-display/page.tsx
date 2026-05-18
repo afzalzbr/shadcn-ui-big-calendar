@@ -1,17 +1,22 @@
 "use client";
 
 import { CodeBlock } from "@/components/code-block";
+import { EventChangeConfirmationModal } from "@/components/event-change-confirmation-modal";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { EventChangeConfirmationModal } from "@/components/event-change-confirmation-modal";
 import { ArrowLeft } from "lucide-react";
 import moment from "moment";
 import Link from "next/link";
 import { ComponentType, useState } from "react";
 import type { CalendarProps, View } from "react-big-calendar";
 import { momentLocalizer, Views } from "react-big-calendar";
-import { CustomEvent, CustomMonthEvent, CustomWeekEvent, CustomAgendaEvent } from "shadcn-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+import {
+  CustomAgendaEvent,
+  CustomEvent,
+  CustomMonthEvent,
+  CustomWeekEvent,
+} from "shadcn-big-calendar";
 
 // Import the calendar wrapper
 import ShadcnBigCalendar from "@/components/shadcn-big-calendar/shadcn-big-calendar";
@@ -104,7 +109,8 @@ export default function TimeDisplayDemo() {
   const [events, setEvents] = useState<CalendarEvent[]>(sampleEvents);
   const [view, setView] = useState<View>(Views.WEEK);
   const [date, setDate] = useState(new Date());
-  const [componentType, setComponentType] = useState<EventComponentType>("custom");
+  const [componentType, setComponentType] =
+    useState<EventComponentType>("custom");
   const [requireConfirmation, setRequireConfirmation] = useState(false);
 
   // Confirmation modal state
@@ -125,9 +131,17 @@ export default function TimeDisplayDemo() {
     );
   };
 
-  const handleEventDrop = ({ event, start, end }: { event: CalendarEvent; start: string | Date; end: string | Date }) => {
-    const startDate = typeof start === 'string' ? new Date(start) : start;
-    const endDate = typeof end === 'string' ? new Date(end) : end;
+  const handleEventDrop = ({
+    event,
+    start,
+    end,
+  }: {
+    event: CalendarEvent;
+    start: string | Date;
+    end: string | Date;
+  }) => {
+    const startDate = typeof start === "string" ? new Date(start) : start;
+    const endDate = typeof end === "string" ? new Date(end) : end;
 
     if (requireConfirmation) {
       setPendingChange({ event, start: startDate, end: endDate, type: "drag" });
@@ -136,12 +150,25 @@ export default function TimeDisplayDemo() {
     }
   };
 
-  const handleEventResize = ({ event, start, end }: { event: CalendarEvent; start: string | Date; end: string | Date }) => {
-    const startDate = typeof start === 'string' ? new Date(start) : start;
-    const endDate = typeof end === 'string' ? new Date(end) : end;
+  const handleEventResize = ({
+    event,
+    start,
+    end,
+  }: {
+    event: CalendarEvent;
+    start: string | Date;
+    end: string | Date;
+  }) => {
+    const startDate = typeof start === "string" ? new Date(start) : start;
+    const endDate = typeof end === "string" ? new Date(end) : end;
 
     if (requireConfirmation) {
-      setPendingChange({ event, start: startDate, end: endDate, type: "resize" });
+      setPendingChange({
+        event,
+        start: startDate,
+        end: endDate,
+        type: "resize",
+      });
     } else {
       applyEventChange(event, startDate, endDate);
     }
@@ -149,7 +176,11 @@ export default function TimeDisplayDemo() {
 
   const handleConfirmChange = () => {
     if (pendingChange) {
-      applyEventChange(pendingChange.event, pendingChange.start, pendingChange.end);
+      applyEventChange(
+        pendingChange.event,
+        pendingChange.start,
+        pendingChange.end
+      );
       setPendingChange(null);
     }
   };
@@ -158,7 +189,9 @@ export default function TimeDisplayDemo() {
     setPendingChange(null);
   };
 
-  const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (event) => {
+  const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (
+    event
+  ) => {
     const variant = event.variant ?? "primary";
     return {
       className: `event-variant-${variant}`,
@@ -241,7 +274,7 @@ function MyCustomEvent({ event }: EventProps) {
 }`;
 
   return (
-    <main className="container space-y-8 py-8">
+    <main className="mx-auto my-auto w-full max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8 py-2">
       <div className="flex items-start gap-4">
         <Button variant="ghost" size="icon" asChild className="mt-1">
           <Link href="/features">
@@ -253,14 +286,17 @@ function MyCustomEvent({ event }: EventProps) {
             Time Display Components
           </h1>
           <p className="text-muted-foreground mt-2 text-sm md:text-base">
-            Show time information alongside event titles using custom event components
+            Show time information alongside event titles using custom event
+            components
           </p>
         </div>
       </div>
 
       <section className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-2xl font-semibold tracking-tight">Interactive Demo</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">
+            Interactive Demo
+          </h2>
           <div className="flex flex-wrap gap-4 items-center">
             <div className="flex items-center gap-2">
               <Switch
@@ -276,44 +312,52 @@ function MyCustomEvent({ event }: EventProps) {
               </label>
             </div>
             <div className="flex flex-wrap gap-2">
-            <Button
-              variant={componentType === "default" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setComponentType("default")}
-            >
-              Default
-            </Button>
-            <Button
-              variant={componentType === "custom" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setComponentType("custom")}
-            >
-              Custom Event
-            </Button>
-            <Button
-              variant={componentType === "custom-month" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setComponentType("custom-month")}
-            >
-              View-Specific
-            </Button>
-            <Button
-              variant={componentType === "custom-week" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setComponentType("custom-week")}
-            >
-              Week Event
-            </Button>
+              <Button
+                variant={componentType === "default" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setComponentType("default")}
+              >
+                Default
+              </Button>
+              <Button
+                variant={componentType === "custom" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setComponentType("custom")}
+              >
+                Custom Event
+              </Button>
+              <Button
+                variant={
+                  componentType === "custom-month" ? "default" : "outline"
+                }
+                size="sm"
+                onClick={() => setComponentType("custom-month")}
+              >
+                View-Specific
+              </Button>
+              <Button
+                variant={
+                  componentType === "custom-week" ? "default" : "outline"
+                }
+                size="sm"
+                onClick={() => setComponentType("custom-week")}
+              >
+                Week Event
+              </Button>
             </div>
           </div>
         </div>
 
         <div className="rounded-lg border bg-card/50 p-4 space-y-2">
           <p className="text-sm text-muted-foreground">
-            {componentType === "default" && "Default React Big Calendar event display (no time shown in title)"}
-            {componentType === "custom" && "CustomEvent component - Shows time range with event title (all views)"}
-            {componentType === "custom-month" && "View-specific components - Optimized display for each calendar view"}
-            {componentType === "custom-week" && "CustomWeekEvent component - Optimized for week and day views"}
+            {componentType === "default" &&
+              "Default React Big Calendar event display (no time shown in title)"}
+            {componentType === "custom" &&
+              "CustomEvent component - Shows time range with event title (all views)"}
+            {componentType === "custom-month" &&
+              "View-specific components - Optimized display for each calendar view"}
+            {componentType === "custom-week" &&
+              "CustomWeekEvent component - Optimized for week and day views"}
           </p>
           <p className="text-xs text-muted-foreground">
             {requireConfirmation
@@ -344,11 +388,15 @@ function MyCustomEvent({ event }: EventProps) {
       </section>
 
       <section className="space-y-6">
-        <h2 className="text-2xl font-semibold tracking-tight">Implementation Examples</h2>
+        <h2 className="text-2xl font-semibold tracking-tight">
+          Implementation Examples
+        </h2>
 
         <div className="space-y-4">
           <div>
-            <h3 className="text-lg font-semibold mb-3">Basic Usage - Single Component</h3>
+            <h3 className="text-lg font-semibold mb-3">
+              Basic Usage - Single Component
+            </h3>
             <p className="text-muted-foreground mb-3">
               Use the same custom event component for all calendar views.
             </p>
@@ -360,9 +408,12 @@ function MyCustomEvent({ event }: EventProps) {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-3">View-Specific Components</h3>
+            <h3 className="text-lg font-semibold mb-3">
+              View-Specific Components
+            </h3>
             <p className="text-muted-foreground mb-3">
-              Use different components optimized for each view type (month, week, day, agenda).
+              Use different components optimized for each view type (month,
+              week, day, agenda).
             </p>
             <CodeBlock
               code={viewSpecificCode}
@@ -372,9 +423,12 @@ function MyCustomEvent({ event }: EventProps) {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-3">Custom Implementation</h3>
+            <h3 className="text-lg font-semibold mb-3">
+              Custom Implementation
+            </h3>
             <p className="text-muted-foreground mb-3">
-              Create your own event component with custom time formatting and styling.
+              Create your own event component with custom time formatting and
+              styling.
             </p>
             <CodeBlock
               code={customizationCode}
@@ -386,38 +440,49 @@ function MyCustomEvent({ event }: EventProps) {
       </section>
 
       <section className="border-t pt-8 space-y-4 max-w-3xl">
-        <h2 className="text-2xl font-semibold tracking-tight">Available Components</h2>
+        <h2 className="text-2xl font-semibold tracking-tight">
+          Available Components
+        </h2>
 
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">CustomEvent</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              CustomEvent
+            </h3>
             <p className="text-muted-foreground">
-              General-purpose event component that displays time range and title in a stacked layout.
-              Works well across all calendar views.
+              General-purpose event component that displays time range and title
+              in a stacked layout. Works well across all calendar views.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">CustomMonthEvent</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              CustomMonthEvent
+            </h3>
             <p className="text-muted-foreground">
-              Optimized for month view where space is limited. Shows start time inline with the title
-              for better space utilization.
+              Optimized for month view where space is limited. Shows start time
+              inline with the title for better space utilization.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">CustomWeekEvent</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              CustomWeekEvent
+            </h3>
             <p className="text-muted-foreground">
-              Optimized for week and day views with more vertical space. Displays time range and title
-              stacked with enhanced readability.
+              Optimized for week and day views with more vertical space.
+              Displays time range and title stacked with enhanced readability.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">CustomAgendaEvent</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              CustomAgendaEvent
+            </h3>
             <p className="text-muted-foreground">
-              Designed for agenda view list format. Shows time range in a fixed-width column alongside
-              the event title for consistent alignment.
+              Designed for agenda view list format. Shows time range in a
+              fixed-width column alongside the event title for consistent
+              alignment.
             </p>
           </div>
         </div>
@@ -430,28 +495,32 @@ function MyCustomEvent({ event }: EventProps) {
           <div className="space-y-2">
             <h3 className="font-semibold">Time Formatting</h3>
             <p className="text-sm text-muted-foreground">
-              Automatic 12-hour time format with AM/PM indicators. All-day events are handled gracefully.
+              Automatic 12-hour time format with AM/PM indicators. All-day
+              events are handled gracefully.
             </p>
           </div>
 
           <div className="space-y-2">
             <h3 className="font-semibold">Responsive Text</h3>
             <p className="text-sm text-muted-foreground">
-              Text sizes are optimized for each view type to ensure readability at different zoom levels.
+              Text sizes are optimized for each view type to ensure readability
+              at different zoom levels.
             </p>
           </div>
 
           <div className="space-y-2">
             <h3 className="font-semibold">Truncation</h3>
             <p className="text-sm text-muted-foreground">
-              Long event titles are truncated with ellipsis to prevent layout breaking in constrained spaces.
+              Long event titles are truncated with ellipsis to prevent layout
+              breaking in constrained spaces.
             </p>
           </div>
 
           <div className="space-y-2">
             <h3 className="font-semibold">Theme Support</h3>
             <p className="text-sm text-muted-foreground">
-              Works seamlessly with light and dark themes using Tailwind CSS and CSS variables.
+              Works seamlessly with light and dark themes using Tailwind CSS and
+              CSS variables.
             </p>
           </div>
         </div>

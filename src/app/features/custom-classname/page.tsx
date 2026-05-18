@@ -1,10 +1,10 @@
 "use client";
 
 import { CodeBlock } from "@/components/code-block";
+import { EventChangeConfirmationModal } from "@/components/event-change-confirmation-modal";
 import ShadcnBigCalendar from "@/components/shadcn-big-calendar/shadcn-big-calendar";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { EventChangeConfirmationModal } from "@/components/event-change-confirmation-modal";
 import { ArrowLeft, Code2 } from "lucide-react";
 import moment from "moment";
 import Link from "next/link";
@@ -127,9 +127,17 @@ export default function CustomClassNameDemo() {
     );
   };
 
-  const handleEventDrop = ({ event, start, end }: { event: CalendarEvent; start: string | Date; end: string | Date }) => {
-    const startDate = typeof start === 'string' ? new Date(start) : start;
-    const endDate = typeof end === 'string' ? new Date(end) : end;
+  const handleEventDrop = ({
+    event,
+    start,
+    end,
+  }: {
+    event: CalendarEvent;
+    start: string | Date;
+    end: string | Date;
+  }) => {
+    const startDate = typeof start === "string" ? new Date(start) : start;
+    const endDate = typeof end === "string" ? new Date(end) : end;
 
     if (requireConfirmation) {
       setPendingChange({ event, start: startDate, end: endDate, type: "drag" });
@@ -138,12 +146,25 @@ export default function CustomClassNameDemo() {
     }
   };
 
-  const handleEventResize = ({ event, start, end }: { event: CalendarEvent; start: string | Date; end: string | Date }) => {
-    const startDate = typeof start === 'string' ? new Date(start) : start;
-    const endDate = typeof end === 'string' ? new Date(end) : end;
+  const handleEventResize = ({
+    event,
+    start,
+    end,
+  }: {
+    event: CalendarEvent;
+    start: string | Date;
+    end: string | Date;
+  }) => {
+    const startDate = typeof start === "string" ? new Date(start) : start;
+    const endDate = typeof end === "string" ? new Date(end) : end;
 
     if (requireConfirmation) {
-      setPendingChange({ event, start: startDate, end: endDate, type: "resize" });
+      setPendingChange({
+        event,
+        start: startDate,
+        end: endDate,
+        type: "resize",
+      });
     } else {
       applyEventChange(event, startDate, endDate);
     }
@@ -151,7 +172,11 @@ export default function CustomClassNameDemo() {
 
   const handleConfirmChange = () => {
     if (pendingChange) {
-      applyEventChange(pendingChange.event, pendingChange.start, pendingChange.end);
+      applyEventChange(
+        pendingChange.event,
+        pendingChange.start,
+        pendingChange.end
+      );
       setPendingChange(null);
     }
   };
@@ -160,7 +185,9 @@ export default function CustomClassNameDemo() {
     setPendingChange(null);
   };
 
-  const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (event) => {
+  const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (
+    event
+  ) => {
     const classes: string[] = [];
 
     // Add category-based classes
@@ -273,7 +300,7 @@ const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (event)
 }`;
 
   return (
-    <main className="container space-y-8 py-8">
+    <main className="mx-auto my-auto w-full max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8 py-2">
       <div className="flex items-start gap-4">
         <Button variant="ghost" size="icon" asChild className="mt-1">
           <Link href="/features">
@@ -285,14 +312,17 @@ const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (event)
             Custom className Styling
           </h1>
           <p className="text-muted-foreground mt-2 text-sm md:text-base">
-            Apply custom CSS classes to events based on categories, priorities, or any custom logic
+            Apply custom CSS classes to events based on categories, priorities,
+            or any custom logic
           </p>
         </div>
       </div>
 
       <section className="space-y-4">
         <div className="flex items-center justify-between flex-wrap gap-4">
-          <h2 className="text-2xl font-semibold tracking-tight">Interactive Demo</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">
+            Interactive Demo
+          </h2>
           <div className="flex items-center gap-4 flex-wrap">
             <div className="flex items-center gap-2">
               <Switch
@@ -337,16 +367,24 @@ const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (event)
               <span className="text-sm">Task</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="h-4 w-4 rounded" style={{ backgroundColor: "hsl(142, 76%, 36%)" }} />
+              <div
+                className="h-4 w-4 rounded"
+                style={{ backgroundColor: "hsl(142, 76%, 36%)" }}
+              />
               <span className="text-sm">Reminder</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="h-4 w-4 rounded" style={{ backgroundColor: "hsl(262, 83%, 58%)" }} />
+              <div
+                className="h-4 w-4 rounded"
+                style={{ backgroundColor: "hsl(262, 83%, 58%)" }}
+              />
               <span className="text-sm">Break</span>
             </div>
           </div>
           <div className="border-t pt-3 mt-3">
-            <p className="text-sm text-muted-foreground mb-2">Priority Indicators:</p>
+            <p className="text-sm text-muted-foreground mb-2">
+              Priority Indicators:
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
               <div className="flex items-center gap-2 text-sm">
                 <div className="h-4 w-1 bg-red-500" />
@@ -357,7 +395,9 @@ const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (event)
                 <span>Medium Priority (yellow border)</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <span className="text-muted-foreground">Low Priority (dimmed)</span>
+                <span className="text-muted-foreground">
+                  Low Priority (dimmed)
+                </span>
               </div>
             </div>
           </div>
@@ -386,11 +426,15 @@ const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (event)
       {showCode && (
         <section className="space-y-4">
           <div>
-            <h2 className="text-2xl font-semibold tracking-tight mb-4">Implementation Code</h2>
+            <h2 className="text-2xl font-semibold tracking-tight mb-4">
+              Implementation Code
+            </h2>
 
             <div className="space-y-4">
               <div>
-                <h3 className="text-lg font-semibold mb-2">TypeScript & eventPropGetter</h3>
+                <h3 className="text-lg font-semibold mb-2">
+                  TypeScript & eventPropGetter
+                </h3>
                 <CodeBlock
                   code={codeExample}
                   language="tsx"
@@ -416,31 +460,42 @@ const eventPropGetter: CalendarProps<CalendarEvent>["eventPropGetter"] = (event)
 
         <div className="space-y-4 text-muted-foreground">
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">1. Define Event Types</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              1. Define Event Types
+            </h3>
             <p>
-              Extend your event interface with custom properties like category, priority, or any other
-              metadata you need to style events dynamically.
+              Extend your event interface with custom properties like category,
+              priority, or any other metadata you need to style events
+              dynamically.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">2. Implement eventPropGetter</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              2. Implement eventPropGetter
+            </h3>
             <p>
-              The eventPropGetter function receives each event and returns an object with a className
-              property. You can apply conditional logic to assign different classes based on event properties.
+              The eventPropGetter function receives each event and returns an
+              object with a className property. You can apply conditional logic
+              to assign different classes based on event properties.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">3. Style with CSS or Tailwind</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              3. Style with CSS or Tailwind
+            </h3>
             <p>
-              Define CSS rules for your custom classes. You can use Tailwind utilities, CSS variables from
-              your theme, or custom CSS. The styles will be applied to events matching those classes.
+              Define CSS rules for your custom classes. You can use Tailwind
+              utilities, CSS variables from your theme, or custom CSS. The
+              styles will be applied to events matching those classes.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">4. Benefits</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              4. Benefits
+            </h3>
             <ul className="list-disc list-inside space-y-1 ml-4">
               <li>Visual distinction between event types at a glance</li>
               <li>Priority highlighting for important events</li>
