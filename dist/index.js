@@ -47,36 +47,6 @@ __export(index_exports, {
 });
 module.exports = __toCommonJS(index_exports);
 
-// lib/components/shadcn-big-calendar.tsx
-var import_react_big_calendar = require("react-big-calendar");
-var ShadcnBigCalendar = import_react_big_calendar.Calendar;
-var shadcn_big_calendar_default = ShadcnBigCalendar;
-
-// lib/components/event-form.tsx
-var z = __toESM(require("zod"));
-var import_jsx_runtime = require("react/jsx-runtime");
-var eventFormSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  start: z.string(),
-  end: z.string(),
-  variant: z.enum(["primary", "secondary", "outline"]),
-  className: z.string().optional()
-});
-function EventForm({
-  start,
-  end,
-  onSubmit,
-  onCancel,
-  ButtonComponent,
-  InputComponent,
-  FormComponents
-}) {
-  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "space-y-4 w-full p-4", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "text-sm text-muted-foreground", children: "This is a placeholder EventForm component. Please implement your own form using your preferred UI library and form handling solution." }),
-    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "text-xs text-muted-foreground", children: "See the package documentation for implementation examples with react-hook-form and Shadcn UI components." })
-  ] });
-}
-
 // lib/utils.ts
 var import_clsx = require("clsx");
 var import_tailwind_merge = require("tailwind-merge");
@@ -92,7 +62,7 @@ function getEventClassName(event) {
 }
 
 // lib/components/event.tsx
-var import_jsx_runtime2 = require("react/jsx-runtime");
+var import_jsx_runtime = require("react/jsx-runtime");
 function CustomEvent({ event }) {
   const formatTime = (date) => {
     const d = typeof date === "string" ? new Date(date) : date;
@@ -109,9 +79,9 @@ function CustomEvent({ event }) {
   const isAllDay = eventWithTime.allDay;
   const customClassName = eventWithTime.className || "";
   const timeString = !isAllDay && start && end ? `${formatTime(start)} - ${formatTime(end)}` : "";
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: cn("flex flex-col gap-0.5 overflow-hidden", customClassName), children: [
-    timeString && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "text-[10px] font-medium opacity-90 leading-tight", children: timeString }),
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "text-xs font-medium leading-tight truncate", children: title })
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: cn("flex flex-col gap-0.5 overflow-hidden", customClassName), children: [
+    timeString && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "text-[10px] font-medium opacity-90 leading-tight", children: timeString }),
+    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "text-xs font-medium leading-tight truncate", children: title })
   ] });
 }
 function CustomMonthEvent({ event }) {
@@ -129,9 +99,9 @@ function CustomMonthEvent({ event }) {
   const isAllDay = eventWithTime.allDay;
   const customClassName = eventWithTime.className || "";
   const timeString = !isAllDay && start ? `${formatTime(start)}` : "";
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: cn("flex items-baseline gap-1 overflow-hidden", customClassName), children: [
-    timeString && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "text-[10px] font-medium opacity-90 shrink-0", children: timeString }),
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "text-xs font-medium truncate", children: title })
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: cn("flex items-baseline gap-1 overflow-hidden", customClassName), children: [
+    timeString && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "text-[10px] font-medium opacity-90 shrink-0", children: timeString }),
+    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "text-xs font-medium truncate", children: title })
   ] });
 }
 function CustomWeekEvent({ event }) {
@@ -150,9 +120,9 @@ function CustomWeekEvent({ event }) {
   const isAllDay = eventWithTime.allDay;
   const customClassName = eventWithTime.className || "";
   const timeString = !isAllDay && start && end ? `${formatTime(start)} - ${formatTime(end)}` : "";
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: cn("flex flex-col gap-0.5 px-1 py-0.5", customClassName), children: [
-    timeString && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "text-[10px] font-semibold opacity-90 leading-tight", children: timeString }),
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "text-xs font-medium leading-tight", children: title })
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: cn("flex flex-col gap-0.5 px-1 py-0.5", customClassName), children: [
+    timeString && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "text-[10px] font-semibold opacity-90 leading-tight", children: timeString }),
+    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "text-xs font-medium leading-tight", children: title })
   ] });
 }
 function CustomAgendaEvent({
@@ -173,11 +143,41 @@ function CustomAgendaEvent({
   const isAllDay = eventWithTime.allDay;
   const customClassName = eventWithTime.className || "";
   const timeString = !isAllDay && start && end ? `${formatTime(start)} - ${formatTime(end)}` : "All Day";
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: cn("flex items-center gap-2", customClassName), children: [
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "text-sm font-medium text-gray-500 w-40", children: timeString }),
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "text-sm", children: title })
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: cn("flex items-center gap-2", customClassName), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "text-sm font-medium text-gray-500 w-40", children: timeString }),
+    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "text-sm", children: title })
   ] });
 }
+
+// lib/components/event-form.tsx
+var z = __toESM(require("zod"));
+var import_jsx_runtime2 = require("react/jsx-runtime");
+var eventFormSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  start: z.string(),
+  end: z.string(),
+  variant: z.enum(["primary", "secondary", "outline"]),
+  className: z.string().optional()
+});
+function EventForm({
+  start,
+  end,
+  onSubmit,
+  onCancel,
+  ButtonComponent,
+  InputComponent,
+  FormComponents
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "space-y-4 w-full p-4", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "text-sm text-muted-foreground", children: "This is a placeholder EventForm component. Please implement your own form using your preferred UI library and form handling solution." }),
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "text-xs text-muted-foreground", children: "See the package documentation for implementation examples with react-hook-form and Shadcn UI components." })
+  ] });
+}
+
+// lib/components/shadcn-big-calendar.tsx
+var import_react_big_calendar = require("react-big-calendar");
+var ShadcnBigCalendar = import_react_big_calendar.Calendar;
+var shadcn_big_calendar_default = ShadcnBigCalendar;
 
 // lib/index.ts
 var import_react_big_calendar2 = require("react-big-calendar");
