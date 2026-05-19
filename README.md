@@ -464,7 +464,7 @@ function CalendarWithConfirmation() {
 }
 ```
 
-See the [interactive demos](https://shadcn-ui-big-calendar.vercel.app/features) for a complete working example with a confirmation modal implementation.
+See the [interactive demos](https://shadcn-big-calendar.vercel.app/features) for a complete working example with a confirmation modal implementation.
 
 ### Complete Example with All Features
 
@@ -585,7 +585,7 @@ You can override the default styles by targeting the calendar classes:
 
 ## TypeScript Support
 
-The package is fully typed with comprehensive TypeScript definitions:
+The package is fully typed with comprehensive TypeScript definitions. All `react-big-calendar` types are re-exported directly — no separate import from `react-big-calendar` needed:
 
 ```tsx
 import type {
@@ -594,6 +594,12 @@ import type {
   EventPropGetter,
   SlotInfo,
   EventInteractionArgs,
+  ToolbarProps,
+  Components,
+  Formats,
+  Messages,
+  DragAction,
+  OnDragStartArgs,
 } from "shadcn-big-calendar";
 
 // Your typed event interface
@@ -661,11 +667,11 @@ The package includes comprehensive interactive demo pages showcasing all feature
   - Custom modal integration with event data
   - Rich event metadata examples (attendees, location, conference links)
 
-Visit the live demos at [https://shadcn-ui-big-calendar.vercel.app/features](https://shadcn-ui-big-calendar.vercel.app/features)
+Visit the live demos at [https://shadcn-big-calendar.vercel.app/features](https://shadcn-big-calendar.vercel.app/features)
 
 ## Demo
 
-Check out the live demo at [https://shadcn-ui-big-calendar.vercel.app/](https://shadcn-ui-big-calendar.vercel.app/)
+Check out the live demo at [https://shadcn-big-calendar.vercel.app/](https://shadcn-big-calendar.vercel.app/)
 
 ## Contributing
 

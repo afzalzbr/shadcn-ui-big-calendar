@@ -1,34 +1,66 @@
 // Main exports for the shadcn-big-calendar package
-export { default as ShadcnBigCalendar } from "./components/shadcn-big-calendar";
+export {
+  CustomAgendaEvent, CustomEvent,
+  CustomMonthEvent,
+  CustomWeekEvent
+} from "./components/event";
 export { EventForm, eventFormSchema } from "./components/event-form";
 export type { EventFormData, EventFormProps } from "./components/event-form";
-export {
-  CustomEvent,
-  CustomMonthEvent,
-  CustomWeekEvent,
-  CustomAgendaEvent,
-} from "./components/event";
+export { default as ShadcnBigCalendar } from "./components/shadcn-big-calendar";
 export { cn, getEventClassName } from "./utils";
 
-// Re-export types from react-big-calendar for convenience
+// Re-export all types from react-big-calendar
 export type {
   CalendarProps,
-  Event,
-  SlotInfo,
-  View,
-  NavigateAction,
-  EventPropGetter,
-  SlotPropGetter,
+  Components,
+  Culture,
+  DateCellWrapperProps,
+  DateFormat,
+  DateFormatFunction,
+  DateHeaderProps,
+  DateLocalizerSpec,
+  DateRange,
+  DateRangeFormatFunction,
+  DayLayoutAlgorithm,
+  DayLayoutFunction,
   DayPropGetter,
+  DayProps,
+  Event,
+  EventPropGetter,
+  EventProps,
+  EventWrapperProps,
+  FormatInput,
+  Formats,
+  HeaderProps,
+  Messages,
+  MoveOptions,
+  NavigateAction,
+  ResourceHeaderProps,
+  SlotGroupPropGetter,
+  SlotInfo,
+  SlotPropGetter, stringOrDate, TimeGridProps,
+  TitleOptions,
+  ToolbarProps,
+  View,
+  ViewKey,
+  ViewProps,
+  ViewsProps,
+  ViewStatic,
+  WeekProps,
+  WorkWeekProps
 } from "react-big-calendar";
 
 export type {
+  DragAction,
+  DragDirection,
+  DragFromOutsideItemArgs,
   EventInteractionArgs,
-  withDragAndDropProps,
+  OnDragStartArgs,
+  withDragAndDropProps
 } from "react-big-calendar/lib/addons/dragAndDrop";
 
 // Export the localizer setup utilities
-export { momentLocalizer, dateFnsLocalizer, Views } from "react-big-calendar";
+export { dateFnsLocalizer, momentLocalizer, Views } from "react-big-calendar";
 
 // Export drag and drop HOC
 export { default as withDragAndDrop } from "react-big-calendar/lib/addons/dragAndDrop";

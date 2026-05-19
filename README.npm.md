@@ -154,7 +154,11 @@ function Calendar() {
     },
   ]);
 
-  const handleEventDrop = ({ event, start, end }: EventInteractionArgs<CalendarEvent>) => {
+  const handleEventDrop = ({
+    event,
+    start,
+    end,
+  }: EventInteractionArgs<CalendarEvent>) => {
     const updatedEvents = events.map((e) =>
       e === event ? { ...e, start: new Date(start), end: new Date(end) } : e
     );
@@ -298,13 +302,13 @@ const events = [
     end: new Date(2024, 0, 15, 11, 0),
     variant: "primary",
     className: "font-bold text-lg", // Custom Tailwind classes
-  }
+  },
 ];
 
 <ShadcnBigCalendar
   events={events}
   eventPropGetter={getEventClassName} // Helper applies variant + className
-/>
+/>;
 ```
 
 ### Time Display with Event Names
@@ -319,10 +323,11 @@ import { CustomEvent } from "shadcn-big-calendar";
   components={{
     event: CustomEvent, // Shows "9:00 AM - 10:30 AM" with title
   }}
-/>
+/>;
 ```
 
 **Available components:**
+
 - `CustomEvent` - Default (works for all views)
 - `CustomMonthEvent` - Optimized for month view
 - `CustomWeekEvent` - Optimized for week/day views
@@ -349,7 +354,7 @@ const events: CalendarEvent<MeetingData>[] = [
       location: "Conference Room A",
       conferenceLink: "https://meet.example.com/abc-123",
     },
-  }
+  },
 ];
 
 const handleSelectEvent = (event: CalendarEvent<MeetingData>) => {
@@ -367,7 +372,7 @@ import {
   momentLocalizer,
   CustomEvent,
   getEventClassName,
-  type CalendarEvent
+  type CalendarEvent,
 } from "shadcn-big-calendar";
 import "shadcn-big-calendar/styles";
 import moment from "moment";
@@ -386,9 +391,9 @@ const events: CalendarEvent<CustomData>[] = [
     className: "font-semibold",
     data: {
       location: "Room A",
-      attendees: ["John", "Jane"]
-    }
-  }
+      attendees: ["John", "Jane"],
+    },
+  },
 ];
 
 function MyCalendar() {
@@ -419,9 +424,9 @@ The package supports three built-in event variants:
 
 ```tsx
 const events = [
-  { title: "Important", variant: "primary", /* ... */ },
-  { title: "Regular", variant: "secondary", /* ... */ },
-  { title: "Optional", variant: "outline", /* ... */ },
+  { title: "Important", variant: "primary" /* ... */ },
+  { title: "Regular", variant: "secondary" /* ... */ },
+  { title: "Optional", variant: "outline" /* ... */ },
 ];
 ```
 
@@ -478,7 +483,7 @@ You can override the default styles by targeting the calendar classes:
 
 ## TypeScript Support
 
-The package is fully typed with comprehensive TypeScript definitions:
+The package is fully typed with comprehensive TypeScript definitions. All `react-big-calendar` types are re-exported directly — no separate import from `react-big-calendar` needed:
 
 ```tsx
 import type {
@@ -487,6 +492,12 @@ import type {
   EventPropGetter,
   SlotInfo,
   EventInteractionArgs,
+  ToolbarProps,
+  Components,
+  Formats,
+  Messages,
+  DragAction,
+  OnDragStartArgs,
 } from "shadcn-big-calendar";
 
 // Your typed event interface
@@ -519,8 +530,8 @@ interface CalendarEvent<T = Record<string, any>> {
   end: Date;
   allDay?: boolean;
   variant?: "primary" | "secondary" | "outline";
-  className?: string;  // Custom CSS classes for individual event styling
-  data?: T;            // Generic data for custom modal content
+  className?: string; // Custom CSS classes for individual event styling
+  data?: T; // Generic data for custom modal content
 }
 ```
 
@@ -537,7 +548,7 @@ const eventFormSchema = z.object({
 
 ## Demo
 
-Check out the live demo at [https://shadcn-ui-big-calendar.vercel.app/](https://shadcn-ui-big-calendar.vercel.app/)
+Check out the live demo at [https://shadcn-big-calendar.vercel.app/](https://shadcn-big-calendar.vercel.app/)
 
 ## Contributing
 

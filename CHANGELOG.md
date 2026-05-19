@@ -74,6 +74,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.0] - 2026-05-18
 
+### Added
+
+- **Full `react-big-calendar` type re-exports**: All types now exported directly from `shadcn-big-calendar` — no need to import from `react-big-calendar` separately
+  - `ToolbarProps`, `Components`, `Formats`, `Messages`, `HeaderProps`, `DateHeaderProps`
+  - `EventProps`, `EventWrapperProps`, `DateCellWrapperProps`, `ResourceHeaderProps`
+  - `ViewProps`, `ViewsProps`, `TimeGridProps`, `DayProps`, `WeekProps`, `WorkWeekProps`
+  - `DayLayoutFunction`, `DateLocalizerSpec`, `DateRange`, `DateRangeFormatFunction`
+  - `TitleOptions`, `MoveOptions`, `FormatInput`, `ViewKey`, `ViewStatic`
+  - `SlotGroupPropGetter`, `stringOrDate`, `Culture`, `DateFormat`, `DateFormatFunction`, `DayLayoutAlgorithm`
+  - DnD: `DragAction`, `DragDirection`, `OnDragStartArgs`, `DragFromOutsideItemArgs`
+
 ### Fixed
 
 - Calendar event overlap rendering handled correctly
@@ -92,9 +103,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
+- Updated demo URL to `https://shadcn-big-calendar.vercel.app/` across README.md, README.npm.md, and USAGE.md
 - Updated USAGE.md with latest examples
-- Updated README.md
+- Updated README.md with full type re-export documentation
 
 ### Internal
 
 - Code structure and formatting improvements across multiple components
+
+## [Unreleased]
+
+### Planned Features
+
+- Recurring events support
+- Event filtering and search
+- Print-friendly styles
+- Additional calendar view customizations
+- Keyboard shortcuts for confirmation modal
+- Batch confirmation for multiple changes
+
+---
+
+For a complete list of changes, see the [commit history](https://github.com/list-jonas/shadcn-ui-big-calendar/commits/main).

@@ -1,10 +1,52 @@
-import { ComponentType } from 'react';
-import { CalendarProps, EventProps } from 'react-big-calendar';
-export { CalendarProps, DayPropGetter, Event, EventPropGetter, NavigateAction, SlotInfo, SlotPropGetter, View, Views, dateFnsLocalizer, momentLocalizer } from 'react-big-calendar';
-import * as react_jsx_runtime from 'react/jsx-runtime';
-import * as z from 'zod';
-import { ClassValue } from 'clsx';
-export { EventInteractionArgs, default as withDragAndDrop, withDragAndDropProps } from 'react-big-calendar/lib/addons/dragAndDrop';
+import { ClassValue } from "clsx";
+import { ComponentType } from "react";
+import { CalendarProps, EventProps } from "react-big-calendar";
+import * as react_jsx_runtime from "react/jsx-runtime";
+import * as z from "zod";
+export {
+    CalendarProps,
+    Components,
+    Culture,
+    DateCellWrapperProps, dateFnsLocalizer, DateFormat,
+    DateFormatFunction,
+    DateHeaderProps,
+    DateLocalizerSpec,
+    DateRange,
+    DateRangeFormatFunction,
+    DayLayoutAlgorithm,
+    DayLayoutFunction,
+    DayPropGetter,
+    DayProps,
+    Event,
+    EventPropGetter,
+    EventProps,
+    EventWrapperProps,
+    FormatInput,
+    Formats,
+    HeaderProps,
+    Messages, momentLocalizer, MoveOptions,
+    NavigateAction,
+    ResourceHeaderProps,
+    SlotGroupPropGetter,
+    SlotInfo,
+    SlotPropGetter, stringOrDate, TimeGridProps,
+    TitleOptions,
+    ToolbarProps,
+    View,
+    ViewKey,
+    ViewProps, Views,
+    ViewsProps, ViewStatic, WeekProps,
+    WorkWeekProps
+} from "react-big-calendar";
+export {
+    DragAction,
+    DragDirection,
+    DragFromOutsideItemArgs,
+    EventInteractionArgs,
+    OnDragStartArgs,
+    default as withDragAndDrop,
+    withDragAndDropProps
+} from "react-big-calendar/lib/addons/dragAndDrop";
 
 /**
  * ShadcnBigCalendar Component
@@ -58,46 +100,52 @@ declare const ShadcnBigCalendar: ComponentType<CalendarProps>;
  * Validation schema for calendar event creation/editing.
  * Supports optional className for custom styling.
  */
-declare const eventFormSchema: z.ZodObject<{
+declare const eventFormSchema: z.ZodObject<
+  {
     title: z.ZodString;
     start: z.ZodString;
     end: z.ZodString;
     variant: z.ZodEnum<["primary", "secondary", "outline"]>;
     className: z.ZodOptional<z.ZodString>;
-}, "strip", z.ZodTypeAny, {
+  },
+  "strip",
+  z.ZodTypeAny,
+  {
     title: string;
     start: string;
     end: string;
     variant: "primary" | "secondary" | "outline";
     className?: string | undefined;
-}, {
+  },
+  {
     title: string;
     start: string;
     end: string;
     variant: "primary" | "secondary" | "outline";
     className?: string | undefined;
-}>;
+  }
+>;
 type EventFormData = z.infer<typeof eventFormSchema>;
 /**
  * EventForm Component Props
  */
 type EventFormProps = {
-    start: Date;
-    end: Date;
-    onSubmit: (data: EventFormData) => void;
-    onCancel: () => void;
-    /** Custom button component - should accept standard button props */
-    ButtonComponent?: React.ComponentType<any>;
-    /** Custom form components - pass your shadcn/ui form components */
-    FormComponents?: {
-        Form: React.ComponentType<any>;
-        FormControl: React.ComponentType<any>;
-        FormField: React.ComponentType<any>;
-        FormItem: React.ComponentType<any>;
-        FormLabel: React.ComponentType<any>;
-    };
-    /** Custom input component - should accept standard input props */
-    InputComponent?: React.ComponentType<any>;
+  start: Date;
+  end: Date;
+  onSubmit: (data: EventFormData) => void;
+  onCancel: () => void;
+  /** Custom button component - should accept standard button props */
+  ButtonComponent?: React.ComponentType<any>;
+  /** Custom form components - pass your shadcn/ui form components */
+  FormComponents?: {
+    Form: React.ComponentType<any>;
+    FormControl: React.ComponentType<any>;
+    FormField: React.ComponentType<any>;
+    FormItem: React.ComponentType<any>;
+    FormLabel: React.ComponentType<any>;
+  };
+  /** Custom input component - should accept standard input props */
+  InputComponent?: React.ComponentType<any>;
 };
 /**
  * EventForm Component
@@ -141,7 +189,15 @@ type EventFormProps = {
  * }
  * ```
  */
-declare function EventForm({ start, end, onSubmit, onCancel, ButtonComponent, InputComponent, FormComponents, }: EventFormProps): react_jsx_runtime.JSX.Element;
+declare function EventForm({
+  start,
+  end,
+  onSubmit,
+  onCancel,
+  ButtonComponent,
+  InputComponent,
+  FormComponents,
+}: EventFormProps): react_jsx_runtime.JSX.Element;
 
 /**
  * Custom Event Component for ShadcnBigCalendar
@@ -160,35 +216,51 @@ declare function EventForm({ start, end, onSubmit, onCancel, ButtonComponent, In
  * />
  * ```
  */
-declare function CustomEvent<T = Record<string, any>>({ event }: EventProps<T & {
+declare function CustomEvent<T = Record<string, any>>({
+  event,
+}: EventProps<
+  T & {
     className?: string;
-}>): react_jsx_runtime.JSX.Element;
+  }
+>): react_jsx_runtime.JSX.Element;
 /**
  * Month Event Component
  *
  * Optimized for month view where space is limited.
  * Shows time inline with title for better space utilization.
  */
-declare function CustomMonthEvent<T = Record<string, any>>({ event }: EventProps<T & {
+declare function CustomMonthEvent<T = Record<string, any>>({
+  event,
+}: EventProps<
+  T & {
     className?: string;
-}>): react_jsx_runtime.JSX.Element;
+  }
+>): react_jsx_runtime.JSX.Element;
 /**
  * Week/Day Event Component
  *
  * Optimized for week and day views where there's more vertical space.
  * Shows time and title stacked for better readability.
  */
-declare function CustomWeekEvent<T = Record<string, any>>({ event }: EventProps<T & {
+declare function CustomWeekEvent<T = Record<string, any>>({
+  event,
+}: EventProps<
+  T & {
     className?: string;
-}>): react_jsx_runtime.JSX.Element;
+  }
+>): react_jsx_runtime.JSX.Element;
 /**
  * Agenda Event Component
  *
  * Optimized for agenda view where events are displayed in a list format.
  */
-declare function CustomAgendaEvent<T = Record<string, any>>({ event, }: EventProps<T & {
+declare function CustomAgendaEvent<T = Record<string, any>>({
+  event,
+}: EventProps<
+  T & {
     className?: string;
-}>): react_jsx_runtime.JSX.Element;
+  }
+>): react_jsx_runtime.JSX.Element;
 
 /**
  * Utility function to merge Tailwind CSS classes
@@ -221,22 +293,36 @@ declare function cn(...inputs: ClassValue[]): string;
  * />
  * ```
  */
-declare function getEventClassName<T extends {
+declare function getEventClassName<
+  T extends {
     variant?: string;
     className?: string;
-}>(event: T): {
-    className: string;
+  },
+>(
+  event: T
+): {
+  className: string;
 };
 
 interface CalendarEvent<T = Record<string, any>> {
-    title: string;
-    start: Date;
-    end: Date;
-    allDay?: boolean;
-    variant?: "primary" | "secondary" | "outline";
-    className?: string;
-    data?: T;
+  title: string;
+  start: Date;
+  end: Date;
+  allDay?: boolean;
+  variant?: "primary" | "secondary" | "outline";
+  className?: string;
+  data?: T;
 }
 type EventVariant = "primary" | "secondary" | "outline";
 
-export { type CalendarEvent, CustomAgendaEvent, CustomEvent, CustomMonthEvent, CustomWeekEvent, EventForm, type EventFormData, type EventFormProps, type EventVariant, ShadcnBigCalendar, cn, eventFormSchema, getEventClassName };
+export {
+    cn, CustomAgendaEvent,
+    CustomEvent,
+    CustomMonthEvent,
+    CustomWeekEvent,
+    EventForm, eventFormSchema,
+    getEventClassName, ShadcnBigCalendar, type CalendarEvent, type EventFormData,
+    type EventFormProps,
+    type EventVariant
+};
+

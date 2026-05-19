@@ -8,14 +8,14 @@ This guide focuses on portable, reusable calendar patterns. State management cho
 
 The advanced sections use `userDefined...` placeholders so you can plug in your own app logic.
 
-| Placeholder | Replace With |
-|-------------|---------------|
-| `userDefinedTimezone` | User preference, tenant setting, or timezone from profile/context |
-| `userDefinedStatusClassNames` | Your status-to-class mapping object |
-| `userDefinedFilters` | Your filter config and defaults |
-| `userDefined...Format` | Your preferred localizer format strings/functions |
-| `userDefinedDrilldownView` | The drilldown view that fits your UX |
-| `userDefinedEvent...` | Your own event IDs, labels, dates, metadata, and optional custom payload |
+| Placeholder                   | Replace With                                                             |
+| ----------------------------- | ------------------------------------------------------------------------ |
+| `userDefinedTimezone`         | User preference, tenant setting, or timezone from profile/context        |
+| `userDefinedStatusClassNames` | Your status-to-class mapping object                                      |
+| `userDefinedFilters`          | Your filter config and defaults                                          |
+| `userDefined...Format`        | Your preferred localizer format strings/functions                        |
+| `userDefinedDrilldownView`    | The drilldown view that fits your UX                                     |
+| `userDefinedEvent...`         | Your own event IDs, labels, dates, metadata, and optional custom payload |
 
 ## Installation
 
@@ -524,7 +524,10 @@ const dayPropGetter: DayPropGetter = (date) => {
 
 const eventPropGetter: EventPropGetter<AppointmentEvent> = (event) => {
   const status = event.data?.status;
-  const statusClassNames = userDefinedStatusClassNames as Record<string, string>;
+  const statusClassNames = userDefinedStatusClassNames as Record<
+    string,
+    string
+  >;
 
   return status ? { className: statusClassNames[status] ?? "" } : {};
 };
@@ -573,12 +576,14 @@ type StatusEvent = CalendarEvent<{
   status?: Status;
 }>;
 
-const [filters, setFilters] = useState<Record<Status, boolean>>(userDefinedFilters);
+const [filters, setFilters] =
+  useState<Record<Status, boolean>>(userDefinedFilters);
 
 const filteredEvents = useMemo(
   () =>
     events.filter(
-      (event: StatusEvent) => !!event.data?.status && !!filters[event.data.status]
+      (event: StatusEvent) =>
+        !!event.data?.status && !!filters[event.data.status]
     ),
   [events, filters]
 );
@@ -853,4 +858,4 @@ export default function RootLayout({ children }) {
 - Migrate existing `react-big-calendar` screens with mostly 1:1 props (`events`, `localizer`, `views`, `onSelectSlot`, `onNavigate`) and then layer styling/custom components.
 - Explore the [React Big Calendar documentation](https://github.com/jquense/react-big-calendar) for advanced features
 - Check out the [Shadcn UI documentation](https://ui.shadcn.com/) for component customization
-- See the complete demo at [https://shadcn-ui-big-calendar.vercel.app/](https://shadcn-ui-big-calendar.vercel.app/)
+- See the complete demo at [https://shadcn-big-calendar.vercel.app/](https://shadcn-big-calendar.vercel.app/)
