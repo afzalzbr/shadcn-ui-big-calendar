@@ -176,7 +176,11 @@ function EventForm({
 
 // lib/components/shadcn-big-calendar.tsx
 var import_react_big_calendar = require("react-big-calendar");
-var ShadcnBigCalendar = import_react_big_calendar.Calendar;
+var import_jsx_runtime3 = require("react/jsx-runtime");
+function ShadcnBigCalendar({ height, style, ...props }) {
+  const resolvedStyle = style?.height == null && height != null ? { ...style, height } : style;
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_big_calendar.Calendar, { ...props, style: resolvedStyle });
+}
 var shadcn_big_calendar_default = ShadcnBigCalendar;
 
 // lib/index.ts

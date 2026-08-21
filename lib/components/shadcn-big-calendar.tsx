@@ -1,7 +1,6 @@
-import type { ComponentType } from "react";
+import type { CSSProperties } from "react";
 import type { CalendarProps } from "react-big-calendar";
 import { Calendar } from "react-big-calendar";
-import { cn } from "../utils";
 
 /**
  * ShadcnBigCalendar Component
@@ -37,7 +36,7 @@ import { cn } from "../utils";
  *       events={events}
  *       startAccessor="start"
  *       endAccessor="end"
- *       style={{ height: 600 }}
+ *       height={600}
  *       eventPropGetter={eventPropGetter}
  *       components={{
  *         event: CustomEvent,
@@ -47,6 +46,21 @@ import { cn } from "../utils";
  * }
  * ```
  */
-const ShadcnBigCalendar = Calendar as ComponentType<CalendarProps>;
+export interface ShadcnBigCalendarProps<
+  TEvent extends object = object,
+  TResource extends object = object,
+> extends CalendarProps<TEvent, TResource> {
+  height?: CSSProperties["height"];
+}
+
+function ShadcnBigCalendar<
+  TEvent extends object = object,
+  TResource extends object = object,
+>({ height, style, ...props }: ShadcnBigCalendarProps<TEvent, TResource>) {
+  const resolvedStyle =
+    style?.height == null && height != null ? { ...style, height } : style;
+
+  return <Calendar {...props} style={resolvedStyle} />;
+}
 
 export default ShadcnBigCalendar;

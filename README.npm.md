@@ -72,7 +72,7 @@ function MyCalendar() {
       events={events}
       startAccessor="start"
       endAccessor="end"
-      style={{ height: 600 }}
+      height={600}
     />
   );
 }
@@ -105,7 +105,7 @@ function MyCalendar() {
       events={events}
       startAccessor="start"
       endAccessor="end"
-      style={{ height: 600 }}
+      height={600}
     />
   );
 }
@@ -520,6 +520,16 @@ const eventPropGetter: EventPropGetter<MyEvent> = (event) => ({
 ### ShadcnBigCalendar Props
 
 This component accepts all props from [React Big Calendar](https://github.com/jquense/react-big-calendar#react-big-calendar-documentation). See the React Big Calendar documentation for the full API.
+
+It also adds an optional `height` prop:
+
+```tsx
+<ShadcnBigCalendar height={700} />
+```
+
+- `height?: React.CSSProperties["height"]` sets the calendar height without requiring `style={{ height: ... }}`.
+- If both `height` and `style.height` are provided, `style.height` takes precedence.
+- When using `withDragAndDrop`, `style.height` is still the most TypeScript-friendly option because the upstream HOC does not preserve custom wrapper props.
 
 ### CalendarEvent Interface
 
