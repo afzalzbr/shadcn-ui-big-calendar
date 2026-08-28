@@ -424,7 +424,7 @@ button.rbc-input::-moz-focus-inner {
 }
 .rbc-timeslot-group {
   border-bottom: 1px solid hsl(var(--border));
-  min-height: 40px;
+  min-height: var(--calendar-row-height, 40px);
   display: -webkit-flex;
   display: -ms-flexbox;
   font-size: 14px;

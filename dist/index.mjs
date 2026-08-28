@@ -129,7 +129,22 @@ function EventForm({
 
 // lib/components/shadcn-big-calendar.tsx
 import { Calendar } from "react-big-calendar";
-var ShadcnBigCalendar = Calendar;
+import { jsx as jsx3 } from "react/jsx-runtime";
+function ShadcnBigCalendar({
+  height,
+  rowHeight,
+  style,
+  ...props
+}) {
+  let resolvedStyle = style?.height == null && height != null ? { ...style, height } : style;
+  if (rowHeight != null) {
+    resolvedStyle = {
+      ...resolvedStyle,
+      ["--calendar-row-height"]: typeof rowHeight === "number" ? `${rowHeight}px` : rowHeight
+    };
+  }
+  return /* @__PURE__ */ jsx3(Calendar, { ...props, style: resolvedStyle });
+}
 var shadcn_big_calendar_default = ShadcnBigCalendar;
 
 // lib/index.ts

@@ -113,6 +113,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **`height` prop** on `ShadcnBigCalendar`: sets calendar height without requiring `style={{ height: ... }}`.
+- **`rowHeight` prop** on `ShadcnBigCalendar`: sets the height of each time-slot row in Week/Day views (number = px, or any CSS length). Backed by a `--calendar-row-height` CSS custom property for consumers who need to set it outside the prop (e.g. through `withDragAndDrop`).
+
 ### Planned Features
 
 - Recurring events support

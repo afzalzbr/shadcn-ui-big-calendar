@@ -79,7 +79,7 @@ export default function Calendar() {
     <ShadcnBigCalendar
       localizer={localizer}
       events={events}
-      style={{ height: 600 }}
+      height={600}
     />
   );
 }

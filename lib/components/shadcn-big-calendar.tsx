@@ -1,7 +1,6 @@
-import type { ComponentType } from "react";
+import type { CSSProperties } from "react";
 import type { CalendarProps } from "react-big-calendar";
 import { Calendar } from "react-big-calendar";
-import { cn } from "../utils";
 
 /**
  * ShadcnBigCalendar Component
@@ -37,7 +36,8 @@ import { cn } from "../utils";
  *       events={events}
  *       startAccessor="start"
  *       endAccessor="end"
- *       style={{ height: 600 }}
+ *       height={600}
+ *       rowHeight={60}
  *       eventPropGetter={eventPropGetter}
  *       components={{
  *         event: CustomEvent,
@@ -47,6 +47,40 @@ import { cn } from "../utils";
  * }
  * ```
  */
-const ShadcnBigCalendar = Calendar as ComponentType<CalendarProps>;
+export interface ShadcnBigCalendarProps<
+  TEvent extends object = object,
+  TResource extends object = object,
+> extends CalendarProps<TEvent, TResource> {
+  height?: CSSProperties["height"];
+  /**
+   * Height of each time-slot row in the Week/Day views. Accepts a number
+   * (pixels) or any CSS length (e.g. `"3rem"`). Defaults to react-big-calendar's
+   * built-in 40px row height.
+   */
+  rowHeight?: number | string;
+}
+
+function ShadcnBigCalendar<
+  TEvent extends object = object,
+  TResource extends object = object,
+>({
+  height,
+  rowHeight,
+  style,
+  ...props
+}: ShadcnBigCalendarProps<TEvent, TResource>) {
+  let resolvedStyle =
+    style?.height == null && height != null ? { ...style, height } : style;
+
+  if (rowHeight != null) {
+    resolvedStyle = {
+      ...resolvedStyle,
+      ["--calendar-row-height" as string]:
+        typeof rowHeight === "number" ? `${rowHeight}px` : rowHeight,
+    } as CSSProperties;
+  }
+
+  return <Calendar {...props} style={resolvedStyle} />;
+}
 
 export default ShadcnBigCalendar;
