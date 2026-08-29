@@ -51,7 +51,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
+    <html
+      lang="en"
+      className={cn("font-sans", geist.variable)}
+      suppressHydrationWarning
+    >
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased flex flex-col",
@@ -75,10 +79,7 @@ export default function RootLayout({
                   Shadcn/ui - Big Calendar Styles
                 </p>
                 <div className="flex items-center gap-2">
-                  <Link
-                    href="/features"
-                    className="mr-2 hover:underline"
-                  >
+                  <Link href="/features" className="mr-2 hover:underline">
                     Features
                   </Link>
                   <GitHubStarButton />

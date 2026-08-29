@@ -1,4 +1,6 @@
-import type { CSSProperties } from "react";
+"use client";
+
+import { type CSSProperties, useEffect } from "react";
 import type { CalendarProps } from "react-big-calendar";
 import { Calendar } from "react-big-calendar";
 
@@ -66,6 +68,7 @@ function ShadcnBigCalendar<
 >({
   height,
   rowHeight,
+  className,
   style,
   ...props
 }: ShadcnBigCalendarProps<TEvent, TResource>) {
@@ -80,7 +83,24 @@ function ShadcnBigCalendar<
     } as CSSProperties;
   }
 
-  return <Calendar {...props} style={resolvedStyle} />;
+  const resolvedClassName =
+    rowHeight == null
+      ? className
+      : [className, "rbc-custom-row-height"].filter(Boolean).join(" ");
+
+  useEffect(() => {
+    if (rowHeight == null) return;
+
+    const frameId = window.requestAnimationFrame(() => {
+      window.dispatchEvent(new Event("resize"));
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, [height, rowHeight]);
+
+  return (
+    <Calendar {...props} className={resolvedClassName} style={resolvedStyle} />
+  );
 }
 
 export default ShadcnBigCalendar;

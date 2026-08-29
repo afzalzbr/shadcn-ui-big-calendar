@@ -198,7 +198,7 @@ interface ShadcnBigCalendarProps<TEvent extends object = object, TResource exten
      */
     rowHeight?: number | string;
 }
-declare function ShadcnBigCalendar<TEvent extends object = object, TResource extends object = object>({ height, rowHeight, style, ...props }: ShadcnBigCalendarProps<TEvent, TResource>): react_jsx_runtime.JSX.Element;
+declare function ShadcnBigCalendar<TEvent extends object = object, TResource extends object = object>({ height, rowHeight, className, style, ...props }: ShadcnBigCalendarProps<TEvent, TResource>): react_jsx_runtime.JSX.Element;
 
 /**
  * Utility function to merge Tailwind CSS classes
