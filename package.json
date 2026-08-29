@@ -1,8 +1,16 @@
 {
   "name": "shadcn-big-calendar",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "A beautiful, accessible calendar component for React built on top of React Big Calendar with Shadcn UI styling and theming support",
   "author": "Afzal Zubair <afzal.zubair2020@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afzalzbr/shadcn-ui-big-calendar.git"
+  },
+  "homepage": "https://github.com/afzalzbr/shadcn-ui-big-calendar#readme",
+  "bugs": {
+    "url": "https://github.com/afzalzbr/shadcn-ui-big-calendar/issues"
+  },
   "license": "MIT",
   "keywords": [
     "react",
