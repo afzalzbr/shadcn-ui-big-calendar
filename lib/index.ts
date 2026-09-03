@@ -7,6 +7,7 @@ export {
 export { EventForm, eventFormSchema } from "./components/event-form";
 export type { EventFormData, EventFormProps } from "./components/event-form";
 export { default as ShadcnBigCalendar } from "./components/shadcn-big-calendar";
+export type { ShadcnBigCalendarProps } from "./components/shadcn-big-calendar";
 export { cn, getEventClassName } from "./utils";
 
 // Re-export all types from react-big-calendar

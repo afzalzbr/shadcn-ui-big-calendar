@@ -469,7 +469,7 @@ button.rbc-input::-moz-focus-inner {
 }
 .rbc-timeslot-group {
   border-bottom: 1px solid var(--border);
-  min-height: 40px;
+  min-height: var(--calendar-row-height, 40px);
   display: -webkit-flex;
   display: -ms-flexbox;
   font-size: 14px;
@@ -477,6 +477,16 @@ button.rbc-input::-moz-focus-inner {
   -webkit-flex-flow: column nowrap;
   -ms-flex-flow: column nowrap;
   flex-flow: column nowrap;
+}
+.rbc-calendar.rbc-custom-row-height .rbc-time-column {
+  min-height: 0;
+}
+.rbc-calendar.rbc-custom-row-height .rbc-time-column .rbc-timeslot-group {
+  -webkit-flex: 0 0 var(--calendar-row-height);
+  -ms-flex: 0 0 var(--calendar-row-height);
+  flex: 0 0 var(--calendar-row-height);
+  height: var(--calendar-row-height);
+  min-height: var(--calendar-row-height);
 }
 .rbc-time-gutter,
 .rbc-header-gutter {
@@ -597,6 +607,9 @@ button.rbc-input::-moz-focus-inner {
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
+}
+.rbc-time-header.rbc-overflowing {
+  border-right: 1px solid var(--border);
 }
 .rbc-rtl .rbc-time-header.rbc-overflowing {
   border-right-width: 0;

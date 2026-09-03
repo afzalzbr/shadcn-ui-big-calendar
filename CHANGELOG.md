@@ -111,6 +111,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Code structure and formatting improvements across multiple components
 
+## [1.3.0] - 2026-08-29
+
+### Added
+
+- **`height` prop** on `ShadcnBigCalendar`: sets calendar height without requiring `style={{ height: ... }}`.
+- **`rowHeight` prop** on `ShadcnBigCalendar`: sets the exact height of each time-slot row in Week/Day views. Numbers are interpreted as pixels, and CSS length strings are supported.
+- **Interactive row-height demo** at `/features/row-height` with seven presets, a validated custom height field, live Week/Day previews, and copyable examples.
+- **CSS custom property support** through `--calendar-row-height` for consumers who need to size rows outside the prop.
+
+### Fixed
+
+- Compact row heights now render at their requested size instead of stretching to fill the calendar viewport.
+- Calendar header columns stay aligned with time-grid columns when row-height changes add or remove the vertical scrollbar.
+- Overflow state is recalculated after runtime row-height changes.
+
+### Documentation
+
+- Added sizing API documentation and examples to `README.md` and `README.npm.md`.
+- Added practical density presets and usage guidance to the feature showcase.
+- Added standalone release notes in `docs/releases/v1.3.0.md`.
+
 ## [Unreleased]
 
 ### Planned Features
@@ -124,4 +145,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-For a complete list of changes, see the [commit history](https://github.com/list-jonas/shadcn-ui-big-calendar/commits/main).
+For a complete list of changes, see the [commit history](https://github.com/afzalzbr/shadcn-ui-big-calendar/commits/main).

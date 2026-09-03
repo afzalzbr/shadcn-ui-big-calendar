@@ -1,10 +1,29 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Clock, Database, Palette } from "lucide-react";
+import {
+  ArrowRight,
+  Clock,
+  Database,
+  MoveVertical,
+  Palette,
+} from "lucide-react";
 import Link from "next/link";
 
 const features = [
+  {
+    title: "Row Height Sizing",
+    description:
+      "Tune the vertical density of Week and Day views with the rowHeight prop. Compare compact, comfortable, and spacious schedules in a live demo.",
+    icon: MoveVertical,
+    href: "/features/row-height",
+    highlights: [
+      "Seven practical presets",
+      "Live density comparison",
+      "Pixel and CSS length values",
+      "Week and Day view support",
+    ],
+  },
   {
     title: "Custom className Styling",
     description:

@@ -2,7 +2,7 @@ import * as react_jsx_runtime from 'react/jsx-runtime';
 import { EventProps, CalendarProps } from 'react-big-calendar';
 export { CalendarProps, Components, Culture, DateCellWrapperProps, DateFormat, DateFormatFunction, DateHeaderProps, DateLocalizerSpec, DateRange, DateRangeFormatFunction, DayLayoutAlgorithm, DayLayoutFunction, DayPropGetter, DayProps, Event, EventPropGetter, EventProps, EventWrapperProps, FormatInput, Formats, HeaderProps, Messages, MoveOptions, NavigateAction, ResourceHeaderProps, SlotGroupPropGetter, SlotInfo, SlotPropGetter, TimeGridProps, TitleOptions, ToolbarProps, View, ViewKey, ViewProps, ViewStatic, Views, ViewsProps, WeekProps, WorkWeekProps, dateFnsLocalizer, momentLocalizer, stringOrDate } from 'react-big-calendar';
 import * as z from 'zod';
-import { ComponentType } from 'react';
+import { CSSProperties } from 'react';
 import { ClassValue } from 'clsx';
 export { DragAction, DragDirection, DragFromOutsideItemArgs, EventInteractionArgs, OnDragStartArgs, default as withDragAndDrop, withDragAndDropProps } from 'react-big-calendar/lib/addons/dragAndDrop';
 
@@ -178,7 +178,8 @@ declare function EventForm({ start, end, onSubmit, onCancel, ButtonComponent, In
  *       events={events}
  *       startAccessor="start"
  *       endAccessor="end"
- *       style={{ height: 600 }}
+ *       height={600}
+ *       rowHeight={60}
  *       eventPropGetter={eventPropGetter}
  *       components={{
  *         event: CustomEvent,
@@ -188,7 +189,16 @@ declare function EventForm({ start, end, onSubmit, onCancel, ButtonComponent, In
  * }
  * ```
  */
-declare const ShadcnBigCalendar: ComponentType<CalendarProps>;
+interface ShadcnBigCalendarProps<TEvent extends object = object, TResource extends object = object> extends CalendarProps<TEvent, TResource> {
+    height?: CSSProperties["height"];
+    /**
+     * Height of each time-slot row in the Week/Day views. Accepts a number
+     * (pixels) or any CSS length (e.g. `"3rem"`). Defaults to react-big-calendar's
+     * built-in 40px row height.
+     */
+    rowHeight?: number | string;
+}
+declare function ShadcnBigCalendar<TEvent extends object = object, TResource extends object = object>({ height, rowHeight, className, style, ...props }: ShadcnBigCalendarProps<TEvent, TResource>): react_jsx_runtime.JSX.Element;
 
 /**
  * Utility function to merge Tailwind CSS classes
@@ -239,4 +249,4 @@ interface CalendarEvent<T = Record<string, any>> {
 }
 type EventVariant = "primary" | "secondary" | "outline";
 
-export { type CalendarEvent, CustomAgendaEvent, CustomEvent, CustomMonthEvent, CustomWeekEvent, EventForm, type EventFormData, type EventFormProps, type EventVariant, ShadcnBigCalendar, cn, eventFormSchema, getEventClassName };
+export { type CalendarEvent, CustomAgendaEvent, CustomEvent, CustomMonthEvent, CustomWeekEvent, EventForm, type EventFormData, type EventFormProps, type EventVariant, ShadcnBigCalendar, type ShadcnBigCalendarProps, cn, eventFormSchema, getEventClassName };

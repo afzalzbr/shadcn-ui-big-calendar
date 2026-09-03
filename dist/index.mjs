@@ -128,8 +128,33 @@ function EventForm({
 }
 
 // lib/components/shadcn-big-calendar.tsx
+import { useEffect } from "react";
 import { Calendar } from "react-big-calendar";
-var ShadcnBigCalendar = Calendar;
+import { jsx as jsx3 } from "react/jsx-runtime";
+function ShadcnBigCalendar({
+  height,
+  rowHeight,
+  className,
+  style,
+  ...props
+}) {
+  let resolvedStyle = style?.height == null && height != null ? { ...style, height } : style;
+  if (rowHeight != null) {
+    resolvedStyle = {
+      ...resolvedStyle,
+      ["--calendar-row-height"]: typeof rowHeight === "number" ? `${rowHeight}px` : rowHeight
+    };
+  }
+  const resolvedClassName = rowHeight == null ? className : [className, "rbc-custom-row-height"].filter(Boolean).join(" ");
+  useEffect(() => {
+    if (rowHeight == null) return;
+    const frameId = window.requestAnimationFrame(() => {
+      window.dispatchEvent(new Event("resize"));
+    });
+    return () => window.cancelAnimationFrame(frameId);
+  }, [height, rowHeight]);
+  return /* @__PURE__ */ jsx3(Calendar, { ...props, className: resolvedClassName, style: resolvedStyle });
+}
 var shadcn_big_calendar_default = ShadcnBigCalendar;
 
 // lib/index.ts

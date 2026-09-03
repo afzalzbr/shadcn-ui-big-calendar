@@ -175,8 +175,33 @@ function EventForm({
 }
 
 // lib/components/shadcn-big-calendar.tsx
+var import_react = require("react");
 var import_react_big_calendar = require("react-big-calendar");
-var ShadcnBigCalendar = import_react_big_calendar.Calendar;
+var import_jsx_runtime3 = require("react/jsx-runtime");
+function ShadcnBigCalendar({
+  height,
+  rowHeight,
+  className,
+  style,
+  ...props
+}) {
+  let resolvedStyle = style?.height == null && height != null ? { ...style, height } : style;
+  if (rowHeight != null) {
+    resolvedStyle = {
+      ...resolvedStyle,
+      ["--calendar-row-height"]: typeof rowHeight === "number" ? `${rowHeight}px` : rowHeight
+    };
+  }
+  const resolvedClassName = rowHeight == null ? className : [className, "rbc-custom-row-height"].filter(Boolean).join(" ");
+  (0, import_react.useEffect)(() => {
+    if (rowHeight == null) return;
+    const frameId = window.requestAnimationFrame(() => {
+      window.dispatchEvent(new Event("resize"));
+    });
+    return () => window.cancelAnimationFrame(frameId);
+  }, [height, rowHeight]);
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_big_calendar.Calendar, { ...props, className: resolvedClassName, style: resolvedStyle });
+}
 var shadcn_big_calendar_default = ShadcnBigCalendar;
 
 // lib/index.ts
